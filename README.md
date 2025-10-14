@@ -1,6 +1,6 @@
 ![Logo do Projeto](SmartVital.png)
 
-# 📘 **Documentação Completa da API SmartVital**
+# 📘 **Documentação API SmartVital**
 
 API RESTful para **monitoramento de pacientes**, **gestão de profissionais de saúde** e **emissão de relatórios clínicos**.
 
