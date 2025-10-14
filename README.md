@@ -1,428 +1,509 @@
 ![Logo do Projeto](SmartVital.png)
 
-Esta API foi desenvolvida para fornecer uma interface simples e robusta para o gerenciamento de perfis de usuários e o monitoramento de suas métricas vitais e relatórios de status.
+# 📘 **Documentação Completa da API SmartVital**
 
-## 1\. Visão Geral e Especificações
+API RESTful para **monitoramento de pacientes**, **gestão de profissionais de saúde** e **emissão de relatórios clínicos**.
 
-| Detalhe | Especificação |
-| :--- | :--- |
-| **Arquitetura** | RESTful |
-| **Formato de Dados** | JSON (JSON) |
-| **Códigos de Sucesso** | `200 OK`, `201 Created`, `204 No Content` |
-| **Códigos de Erro** | `400 Bad Request`, `404 Not Found` |
+---
 
-### Estrutura das Entidades
+## **1. Especificações Gerais**
 
-#### Entidade: Usuário
+| Detalhe     | Especificação                             |
+| ----------- | ----------------------------------------- |
+| Arquitetura | RESTful                                   |
+| Formato     | JSON                                      |
+| Sucesso     | `200 OK`, `201 Created`, `204 No Content` |
+| Erros       | `400 Bad Request`, `404 Not Found`        |
 
-Gerencia dados demográficos, de acesso e as medições vitais mais recentes.
+---
 
-| Atributo | Tipo | Descrição | Notas |
-| :--- | :--- | :--- | :--- |
-| `id` | `number` (Integer) | Identificador único do usuário. | **Chave Primária** |
-| `senha` | `string` | Senha de acesso. | Necessária para criação e atualizações de segurança. |
-| `temperatura` | `number` (Decimal) | Temperatura corporal ($^\circ C$). | Ex: 36.5 |
-| `indice_glicemico` | `number` (Decimal) | Nível de glicose (mg/dL). | Ex: 95.2 |
-| `pressao_arterial` | `string` | Pressão arterial (sistólica/diastólica). | Ex: "120/80" |
-| `saturacao` | `number` (Integer) | Saturação de oxigênio (%). | Ex: 98 |
-| `pulso` | `number` (Integer) | Frequência de pulso (bpm). | Ex: 72 |
-| `peso` | `number` (Decimal) | Peso em quilogramas (kg). | Ex: 80.5 |
-| `idade` | `number` (Integer) | Idade do usuário. | Ex: 45 |
-| `respiração` | `number` (Integer) | Taxa de respiração (rpm). | Ex: 16 |
-| `altura` | `number` (Decimal) | Altura em metros (m). | Ex: 1.75 |
+## **2. Estrutura das Entidades**
 
-#### Entidade: Relatório
+### **Paciente**
 
-Gerencia o status de conclusão de um documento ou processo de saúde.
+| Atributo           | Tipo   | Descrição                 |
+| ------------------ | ------ | ------------------------- |
+| `id`               | number | Identificador único       |
+| `senha`            | string | Senha de acesso           |
+| `temperatura`      | number | Temperatura corporal (°C) |
+| `indice_glicemico` | number | Glicemia (mg/dL)          |
+| `pressao_arterial` | string | Ex: `"120/80"`            |
+| `saturacao`        | number | Saturação de O₂ (%)       |
+| `pulso`            | number | Batimentos por minuto     |
+| `respiracao`       | number | Respiração por minuto     |
+| `peso`             | number | Peso (kg)                 |
+| `altura`           | number | Altura (m)                |
+| `idade`            | number | Idade (anos)              |
 
-| Atributo | Tipo | Descrição |
-| :--- | :--- | :--- |
-| `id` | `number` (Integer) | Identificador único do relatório. |
-| `id_usuario` | `number` (Integer) | ID do usuário associado. |
-| `completo` | `boolean` | Status: `true` se o relatório estiver finalizado. |
-| `incompleto` | `boolean` | Status: `true` se o relatório estiver pendente. |
+---
 
------
+### **Agente de Saúde**
 
-## 2\. Endpoints de Usuários (9 Ações)
+| Atributo         | Tipo                | Descrição              |
+| ---------------- | ------------------- | ---------------------- |
+| `id`             | number              | Identificador único    |
+| `nome`           | string              | Nome completo          |
+| `senha`          | string              | Senha de acesso        |
+| `cargo`          | string              | Ex: Médico, Enfermeiro |
+| `crm`            | string *(opcional)* | Registro profissional  |
+| `dataDeAdmissao` | string              | `YYYY-MM-DD`           |
 
-#### 2.1 `POST /usuarios`
+---
 
-* **Cria um usuário** novo.
-* **Body de exemplo**:
+### **Relatório**
 
-  ```json
+| Atributo      | Tipo    | Descrição                         |
+| ------------- | ------- | --------------------------------- |
+| `id`          | number  | Identificador único               |
+| `id_paciente` | number  | ID do paciente                    |
+| `id_agente`   | number  | ID do agente                      |
+| `completo`    | boolean | Status finalizado                 |
+| `incompleto`  | boolean | Status pendente                   |
+| `observacao`  | string  | Texto clínico                     |
+| `data`        | string  | ISO-8601 (`2025-10-14T10:00:00Z`) |
+
+---
+
+## **3. Endpoints de Pacientes**
+
+> ⚠️ **Pacientes não têm acesso aos relatórios.** Apenas Agentes de Saúde podem criar, ler e atualizar relatórios.
+
+---
+
+### 3.1 `POST /pacientes` – Criar Paciente
+
+**Request:**
+
+```json
+{
+  "senha": "senhaSegura",
+  "idade": 30,
+  "peso": 75.0,
+  "altura": 1.70
+}
+```
+
+**Response (201 Created):**
+
+```json
+{
+  "id": 1,
+  "senha": "senhaSegura",
+  "idade": 30,
+  "peso": 75.0,
+  "altura": 1.70,
+  "temperatura": null,
+  "indice_glicemico": null,
+  "pressao_arterial": null,
+  "saturacao": null,
+  "pulso": null,
+  "respiracao": null
+}
+```
+
+---
+
+### 3.2 `GET /pacientes` – Listar Pacientes
+
+**Response (200 OK):**
+
+```json
+[
   {
-    "senha": "senhaSegura",
+    "id": 1,
     "idade": 30,
     "peso": 75.0,
     "altura": 1.70
+  },
+  {
+    "id": 2,
+    "idade": 45,
+    "peso": 82.5,
+    "altura": 1.80
   }
-  ```
-* **Resposta (201 Created)**:
+]
+```
 
-  ```json
+---
+
+### 3.3 `GET /pacientes/{id}` – Detalhar Paciente
+
+**Response (200 OK):**
+
+```json
+{
+  "id": 1,
+  "senha": "senhaSegura",
+  "idade": 30,
+  "peso": 75.0,
+  "altura": 1.70,
+  "temperatura": 36.5,
+  "indice_glicemico": 95.2,
+  "pressao_arterial": "120/80",
+  "saturacao": 98,
+  "pulso": 72,
+  "respiracao": 16
+}
+```
+
+---
+
+### 3.4 `PUT /pacientes/{id}` – Atualização Completa
+
+**Request:**
+
+```json
+{
+  "senha": "novaSenha",
+  "idade": 31,
+  "peso": 76.0,
+  "altura": 1.70,
+  "temperatura": 37.0,
+  "indice_glicemico": 100.0,
+  "pressao_arterial": "125/85",
+  "saturacao": 97,
+  "pulso": 75,
+  "respiracao": 17
+}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "id": 1,
+  "idade": 31,
+  "peso": 76.0,
+  "altura": 1.70,
+  "temperatura": 37.0,
+  "indice_glicemico": 100.0,
+  "pressao_arterial": "125/85",
+  "saturacao": 97,
+  "pulso": 75,
+  "respiracao": 17
+}
+```
+
+---
+
+### 3.5 `DELETE /pacientes/{id}` – Remover Paciente
+
+**Response (204 No Content):**
+
+```json
+{}
+```
+
+---
+
+### 3.6 `GET /pacientes/{id}/vitals` – Sinais Vitais
+
+**Response (200 OK):**
+
+```json
+{
+  "temperatura": 36.5,
+  "indice_glicemico": 95.2,
+  "pressao_arterial": "120/80",
+  "saturacao": 98,
+  "pulso": 72,
+  "respiracao": 16
+}
+```
+
+---
+
+### 3.7 `PATCH /pacientes/{id}/peso` – Atualizar Peso
+
+**Request:**
+
+```json
+{
+  "peso": 78.0
+}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "mensagem": "Peso atualizado com sucesso."
+}
+```
+
+---
+
+### 3.8 `PATCH /pacientes/{id}/idade` – Atualizar Idade
+
+**Request:**
+
+```json
+{
+  "idade": 35
+}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "mensagem": "Idade atualizada com sucesso."
+}
+```
+
+---
+
+### 3.9 `PATCH /pacientes/{id}/pressao` – Atualizar Pressão Arterial
+
+**Request:**
+
+```json
+{
+  "pressao_arterial": "130/85"
+}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "mensagem": "Pressão arterial atualizada com sucesso."
+}
+```
+
+---
+
+## **4. Endpoints de Agentes de Saúde**
+
+### 4.1 `POST /agentes` – Criar Agente de Saúde
+
+**Request:**
+
+```json
+{
+  "nome": "Dra. Ana Souza",
+  "senha": "senhaForte123",
+  "cargo": "Médico",
+  "crm": "CRM-SP 43210",
+  "dataDeAdmissao": "2024-06-01"
+}
+```
+
+**Response (201 Created):**
+
+```json
+{
+  "id": 1,
+  "nome": "Dra. Ana Souza",
+  "cargo": "Médico",
+  "crm": "CRM-SP 43210",
+  "dataDeAdmissao": "2024-06-01"
+}
+```
+
+---
+
+### 4.2 `GET /agentes` – Listar Agentes
+
+**Response (200 OK):**
+
+```json
+[
   {
     "id": 1,
-    "senha": "senhaSegura",
-    "idade": 30,
-    "peso": 75.0,
-    "altura": 1.70,
-    "temperatura": null,
-    "indice_glicemico": null,
-    "pressao_arterial": null,
-    "saturacao": null,
-    "pulso": null,
-    "respiração": null
+    "nome": "Dra. Ana Souza",
+    "cargo": "Médico",
+    "crm": "CRM-SP 43210",
+    "dataDeAdmissao": "2024-06-01"
+  },
+  {
+    "id": 2,
+    "nome": "Carlos Mendes",
+    "cargo": "Enfermeiro",
+    "dataDeAdmissao": "2023-02-10"
   }
-  ```
+]
+```
 
 ---
 
-#### 2.2 `GET /usuarios`
+### 4.3 `GET /agentes/{id}` – Detalhar Agente
 
-* **Lista todos os usuários**.
-* **Resposta (200 OK)**:
+**Response (200 OK):**
 
-  ```json
-  [
-    {
-      "id": 1,
-      "idade": 30,
-      "peso": 75.0,
-      "altura": 1.70,
-      ...
-    },
-    {
-      "id": 2,
-      "idade": 45,
-      "peso": 82.5,
-      "altura": 1.80,
-      ...
-    }
-  ]
-  ```
+```json
+{
+  "id": 1,
+  "nome": "Dra. Ana Souza",
+  "cargo": "Médico",
+  "crm": "CRM-SP 43210",
+  "dataDeAdmissao": "2024-06-01"
+}
+```
 
 ---
 
-#### 2.3 `GET /usuarios/{id}`
+### 4.4 `PATCH /agentes/{id}` – Atualizar Dados do Agente
 
-* **Retorna o perfil completo do usuário com aquele ID.**
-* **Resposta (200 OK)**:
+**Request:**
 
-  ```json
-  {
-    "id": 1,
-    "senha": "senhaSegura",
-    "idade": 30,
-    "peso": 75.0,
-    "altura": 1.70,
-    "temperatura": 36.5,
-    "indice_glicemico": 95.2,
-    "pressao_arterial": "120/80",
-    "saturacao": 98,
-    "pulso": 72,
-    "respiração": 16
-  }
-  ```
+```json
+{
+  "cargo": "Coordenador Médico"
+}
+```
+
+**Response (200 OK):**
+
+```json
+{
+  "mensagem": "Dados do agente atualizados com sucesso."
+}
+```
 
 ---
 
-#### 2.4 `PUT /usuarios/{id}`
+### 4.5 `DELETE /agentes/{id}` – Remover Agente
 
-* **Atualiza completamente os dados do usuário.**
-* **Body de exemplo**:
+**Response (204 No Content):**
 
-  ```json
-  {
-    "senha": "novaSenha",
-    "idade": 31,
-    "peso": 76.0,
-    "altura": 1.70,
-    "temperatura": 37.0,
-    "indice_glicemico": 100.0,
-    "pressao_arterial": "125/85",
-    "saturacao": 97,
-    "pulso": 75,
-    "respiração": 17
-  }
-  ```
-* **Resposta (200 OK)**: Objeto atualizado.
+```json
+{}
+```
 
 ---
 
-#### 2.5 `DELETE /usuarios/{id}`
+## **5. Endpoints de Relatórios**
 
-* **Remove o usuário.**
-* **Resposta (204 No Content)**: Nenhum conteúdo retornado.
-
----
-
-#### 2.6 `GET /usuarios/{id}/vitals`
-
-* **Retorna apenas os dados de saúde.**
-* **Resposta (200 OK)**:
-
-  ```json
-  {
-    "temperatura": 36.5,
-    "indice_glicemico": 95.2,
-    "pressao_arterial": "120/80",
-    "saturacao": 98,
-    "pulso": 72,
-    "respiração": 16
-  }
-  ```
+> 🔒 **Acesso exclusivo de Agentes de Saúde.**
+> Pacientes **não podem** criar, ler, nem atualizar relatórios.
 
 ---
 
-#### 2.7 `PATCH /usuarios/{id}/peso`
+### 5.1 `POST /relatorios` – Criar Relatório
 
-* **Atualiza apenas o peso**.
-* **Body**:
+**Request:**
 
-  ```json
-  {
-    "peso": 78.0
-  }
-  ```
-* **Resposta (200 OK)**:
+```json
+{
+  "id_paciente": 1,
+  "id_agente": 2,
+  "completo": false,
+  "incompleto": true,
+  "observacao": "Paciente apresenta febre leve. Recomendado repouso e hidratação.",
+  "data": "2025-10-14T10:00:00Z"
+}
+```
 
-  ```json
-  {
-    "mensagem": "Peso atualizado com sucesso."
-  }
-  ```
+**Response (201 Created):**
 
----
-
-#### 2.8 `PATCH /usuarios/{id}/idade`
-
-* **Atualiza apenas a idade.**
-* **Body**:
-
-  ```json
-  {
-    "idade": 35
-  }
-  ```
-* **Resposta (200 OK)**:
-
-  ```json
-  {
-    "mensagem": "Idade atualizada com sucesso."
-  }
-  ```
+```json
+{
+  "id": 10,
+  "id_paciente": 1,
+  "id_agente": 2,
+  "completo": false,
+  "incompleto": true,
+  "observacao": "Paciente apresenta febre leve. Recomendado repouso e hidratação.",
+  "data": "2025-10-14T10:00:00Z"
+}
+```
 
 ---
 
-#### 2.9 `PATCH /usuarios/{id}/pressao`
+### 5.2 `GET /relatorios/{id}` – Detalhar Relatório
 
-* **Atualiza apenas a pressão arterial.**
-* **Body**:
+**Response (200 OK):**
 
-  ```json
-  {
-    "pressao_arterial": "130/85"
-  }
-  ```
-* **Resposta (200 OK)**:
-
-  ```json
-  {
-    "mensagem": "Pressão arterial atualizada com sucesso."
-  }
-  ```
+```json
+{
+  "id": 10,
+  "id_paciente": 1,
+  "id_agente": 2,
+  "completo": false,
+  "incompleto": true,
+  "observacao": "Paciente apresenta febre leve. Recomendado repouso e hidratação.",
+  "data": "2025-10-14T10:00:00Z"
+}
+```
 
 ---
 
-### **Endpoints de Relatórios**
+### 5.3 `GET /pacientes/{id}/relatorios` – Listar Relatórios do Paciente *(apenas para agentes)*
 
-#### 3.1 `POST /relatorios`
+**Response (200 OK):**
 
-* **Cria um novo relatório.**
-* **Body de exemplo**:
-
-  ```json
-  {
-    "id_usuario": 1,
-    "completo": false,
-    "incompleto": true
-  }
-  ```
-* **Resposta (201 Created)**:
-
-  ```json
+```json
+[
   {
     "id": 10,
-    "id_usuario": 1,
     "completo": false,
-    "incompleto": true
+    "incompleto": true,
+    "observacao": "Paciente apresenta febre leve. Recomendado repouso e hidratação.",
+    "data": "2025-10-14T10:00:00Z"
+  },
+  {
+    "id": 11,
+    "completo": true,
+    "incompleto": false,
+    "observacao": "Paciente está estável, alta médica recomendada.",
+    "data": "2025-10-13T15:30:00Z"
   }
-  ```
+]
+```
 
 ---
 
-#### 3.2 `GET /relatorios/{id}`
+### 5.4 `PUT /relatorios/{id}/completo` – Marcar Como Completo
 
-* **Retorna status de um relatório específico.**
-* **Resposta (200 OK)**:
+**Response (200 OK):**
 
-  ```json
+```json
+{
+  "mensagem": "Relatório marcado como completo."
+}
+```
+
+---
+
+### 5.5 `PUT /relatorios/{id}/incompleto` – Marcar Como Incompleto
+
+**Response (200 OK):**
+
+```json
+{
+  "mensagem": "Relatório marcado como incompleto."
+}
+```
+
+---
+
+### 5.6 `GET /relatorios/pendentes` – Listar Relatórios Incompletos
+
+**Response (200 OK):**
+
+```json
+[
   {
     "id": 10,
-    "id_usuario": 1,
+    "id_paciente": 1,
+    "id_agente": 2,
     "completo": false,
-    "incompleto": true
+    "incompleto": true,
+    "observacao": "Paciente apresenta febre leve. Recomendado repouso e hidratação.",
+    "data": "2025-10-14T10:00:00Z"
   }
-  ```
+]
+```
 
 ---
 
-#### 3.3 `GET /usuarios/{id}/relatorios`
+## **Resumo Final**
 
-* **Lista todos os relatórios do usuário.**
-* **Resposta (200 OK)**:
-
-  ```json
-  [
-    {
-      "id": 10,
-      "completo": false,
-      "incompleto": true
-    },
-    {
-      "id": 12,
-      "completo": true,
-      "incompleto": false
-    }
-  ]
-  ```
+| Entidade            | Total de Endpoints | Acesso                                     |
+| ------------------- | ------------------ | ------------------------------------------ |
+| **Paciente**        | 9                  | Acesso ao próprio cadastro e sinais vitais |
+| **Agente de Saúde** | 5                  | Acesso total (pacientes + relatórios)      |
+| **Relatório**       | 6                  | Exclusivo de Agentes de Saúde              |
 
 ---
-
-#### 3.4 `PUT /relatorios/{id}/completo`
-
-* **Marca como completo.**
-* **Resposta (200 OK)**:
-
-  ```json
-  {
-    "mensagem": "Relatório marcado como completo."
-  }
-  ```
-
----
-
-#### 3.5 `PUT /relatorios/{id}/incompleto`
-
-* **Marca como incompleto.**
-* **Resposta (200 OK)**:
-
-  ```json
-  {
-    "mensagem": "Relatório marcado como incompleto."
-  }
-  ```
-
----
-
-#### 3.6 `GET /relatorios/pendentes`
-
-* **Lista relatórios incompletos.**
-* **Resposta (200 OK)**:
-
-  ```json
-  [
-    {
-      "id": 10,
-      "id_usuario": 1,
-      "completo": false,
-      "incompleto": true
-    }
-  ]
-  ```
-
----
-
-### **Endpoints de Métricas e Consultas**
-
-#### 4.1 `GET /metricas/contagem/usuarios`
-
-* **Retorna número total de usuários.**
-* **Resposta**:
-
-  ```json
-  {
-    "total_usuarios": 52
-  }
-  ```
-
----
-
-#### 4.2 `GET /metricas/media/peso`
-
-* **Retorna média de peso.**
-* **Resposta**:
-
-  ```json
-  {
-    "media_peso": 74.3
-  }
-  ```
-
----
-
-#### 4.3 `GET /metricas/maxima/temperatura`
-
-* **Retorna maior temperatura registrada.**
-* **Resposta**:
-
-  ```json
-  {
-    "maxima_temperatura": 39.2
-  }
-  ```
-
----
-
-#### 4.4 `GET /relatorios/contagem/completo`
-
-* **Número de relatórios completos.**
-* **Resposta**:
-
-  ```json
-  {
-    "relatorios_completos": 28
-  }
-  ```
-
----
-
-#### 4.5 `GET /usuarios/acimadaidade/{idade}`
-
-* **Lista usuários com idade superior ao valor informado.**
-* **Exemplo `/usuarios/acimadaidade/60`**
-* **Resposta**:
-
-  ```json
-  [
-    {
-      "id": 4,
-      "idade": 65,
-      "peso": 70.2,
-      "altura": 1.68,
-      ...
-    },
-    {
-      "id": 5,
-      "idade": 72,
-      "peso": 68.5,
-      "altura": 1.65,
-      ...
-    }
-  ]
-  ```
-
----
-
