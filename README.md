@@ -2,7 +2,7 @@
 
 ![Logo do Projeto](ImagemProjeto(SmartVitals).png)
 
-# 🩺 **SmartVital API – Documentação Técnica Completa**
+# 🩺 **SmartVital**
 
 API RESTful para **monitoramento de pacientes**, **gestão de profissionais de saúde** e **emissão de relatórios clínicos**.
 Desenvolvida para uso em ambientes hospitalares, unidades de pronto atendimento e clínicas, com foco em **segurança, rastreabilidade e padronização de dados médicos**.
