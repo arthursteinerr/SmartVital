@@ -1,6 +1,6 @@
 ---
 
-![Logo do Projeto](SmartVital.png)
+![Logo do Projeto](ImagemProjeto(SmartVitals).png)
 
 # 🩺 **SmartVital API – Documentação Técnica Completa**
 
