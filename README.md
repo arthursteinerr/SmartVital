@@ -1,78 +1,91 @@
+---
+
 ![Logo do Projeto](SmartVital.png)
 
-# 📘 **Documentação API SmartVital**
+# 🩺 **SmartVital API – Documentação Técnica Completa**
 
 API RESTful para **monitoramento de pacientes**, **gestão de profissionais de saúde** e **emissão de relatórios clínicos**.
+Desenvolvida para uso em ambientes hospitalares, unidades de pronto atendimento e clínicas, com foco em **segurança, rastreabilidade e padronização de dados médicos**.
 
 ---
 
 ## **1. Especificações Gerais**
 
-| Detalhe     | Especificação                             |
-| ----------- | ----------------------------------------- |
-| Arquitetura | RESTful                                   |
-| Formato     | JSON                                      |
-| Sucesso     | `200 OK`, `201 Created`, `204 No Content` |
-| Erros       | `400 Bad Request`, `404 Not Found`        |
+| **Parâmetro**          | **Descrição**                                                                       |
+| ---------------------- | ----------------------------------------------------------------------------------- |
+| **Arquitetura**        | RESTful                                                                             |
+| **Formato de Dados**   | JSON                                                                                |
+| **Autenticação**       | Baseada em credenciais (`senha`)                                                    |
+| **Códigos de Sucesso** | `200 OK`, `201 Created`, `204 No Content`                                           |
+| **Códigos de Erro**    | `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `500 Internal Server Error` |
 
 ---
 
 ## **2. Estrutura das Entidades**
 
-### **Paciente**
+### 👤 **Paciente**
 
-| Atributo           | Tipo   | Descrição                 |
-| ------------------ | ------ | ------------------------- |
-| `id`               | number | Identificador único       |
-| `senha`            | string | Senha de acesso           |
-| `temperatura`      | number | Temperatura corporal (°C) |
-| `indice_glicemico` | number | Glicemia (mg/dL)          |
-| `pressao_arterial` | string | Ex: `"120/80"`            |
-| `saturacao`        | number | Saturação de O₂ (%)       |
-| `pulso`            | number | Batimentos por minuto     |
-| `respiracao`       | number | Respiração por minuto     |
-| `peso`             | number | Peso (kg)                 |
-| `altura`           | number | Altura (m)                |
-| `idade`            | number | Idade (anos)              |
+Representa o indivíduo monitorado pela plataforma.
 
----
-
-### **Agente de Saúde**
-
-| Atributo         | Tipo                | Descrição              |
-| ---------------- | ------------------- | ---------------------- |
-| `id`             | number              | Identificador único    |
-| `nome`           | string              | Nome completo          |
-| `senha`          | string              | Senha de acesso        |
-| `cargo`          | string              | Ex: Médico, Enfermeiro |
-| `crm`            | string *(opcional)* | Registro profissional  |
-| `dataDeAdmissao` | string              | `YYYY-MM-DD`           |
+| Campo              | Tipo   | Descrição                         |
+| ------------------ | ------ | --------------------------------- |
+| `id`               | number | Identificador único               |
+| `senha`            | string | Senha de autenticação do paciente |
+| `temperatura`      | number | Temperatura corporal (°C)         |
+| `indice_glicemico` | number | Índice glicêmico (mg/dL)          |
+| `pressao_arterial` | string | Exemplo: `"120/80"`               |
+| `saturacao`        | number | Saturação de oxigênio (%)         |
+| `pulso`            | number | Frequência cardíaca (bpm)         |
+| `respiracao`       | number | Frequência respiratória (rpm)     |
+| `peso`             | number | Peso corporal (kg)                |
+| `altura`           | number | Altura (m)                        |
+| `idade`            | number | Idade em anos                     |
 
 ---
 
-### **Relatório**
+### 👤 **Agente de Saúde**
 
-| Atributo      | Tipo    | Descrição                         |
-| ------------- | ------- | --------------------------------- |
-| `id`          | number  | Identificador único               |
-| `id_paciente` | number  | ID do paciente                    |
-| `id_agente`   | number  | ID do agente                      |
-| `completo`    | boolean | Status finalizado                 |
-| `incompleto`  | boolean | Status pendente                   |
-| `observacao`  | string  | Texto clínico                     |
-| `data`        | string  | ISO-8601 (`2025-10-14T10:00:00Z`) |
+Inclui **médicos, enfermeiros e técnicos**. Responsável por supervisionar pacientes e gerar relatórios.
+
+| Campo            | Tipo                | Descrição                                        |
+| ---------------- | ------------------- | ------------------------------------------------ |
+| `id`             | number              | Identificador único                              |
+| `nome`           | string              | Nome completo                                    |
+| `senha`          | string              | Senha de acesso do agente                        |
+| `cargo`          | string              | Exemplo: `"Médico"`, `"Enfermeiro"`, `"Técnico"` |
+| `crm`            | string *(opcional)* | Registro profissional do médico                  |
+| `dataDeAdmissao` | string              | Data de admissão (`YYYY-MM-DD`)                  |
+
+---
+
+### 📄 **Relatório Clínico**
+
+Gerado exclusivamente por **agentes de saúde** para acompanhamento de pacientes.
+
+| Campo         | Tipo    | Descrição                              |
+| ------------- | ------- | -------------------------------------- |
+| `id`          | number  | Identificador único                    |
+| `id_paciente` | number  | ID do paciente relacionado             |
+| `id_agente`   | number  | ID do agente responsável               |
+| `completo`    | boolean | Indica se o relatório foi finalizado   |
+| `incompleto`  | boolean | Indica se o relatório está pendente    |
+| `observacao`  | string  | Texto livre com observações clínicas   |
+| `data`        | string  | Data ISO-8601 (`YYYY-MM-DDTHH:mm:ssZ`) |
 
 ---
 
 ## **3. Endpoints de Pacientes**
 
-> ⚠️ **Pacientes não têm acesso aos relatórios.** Apenas Agentes de Saúde podem criar, ler e atualizar relatórios.
+> ⚠️ **Atenção:** Pacientes **não possuem acesso a relatórios clínicos**.
+> Apenas **Agentes de Saúde** podem criar, visualizar e editar relatórios.
 
 ---
 
-### 3.1 `POST /pacientes` – Criar Paciente
+### **3.1 POST /pacientes**
 
-**Request:**
+Cria um novo paciente no sistema.
+
+**Request**
 
 ```json
 {
@@ -83,7 +96,7 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 }
 ```
 
-**Response (201 Created):**
+**Response (201 Created)**
 
 ```json
 {
@@ -103,9 +116,11 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 
 ---
 
-### 3.2 `GET /pacientes` – Listar Pacientes
+### **3.2 GET /pacientes**
 
-**Response (200 OK):**
+Lista todos os pacientes cadastrados.
+
+**Response (200 OK)**
 
 ```json
 [
@@ -126,9 +141,11 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 
 ---
 
-### 3.3 `GET /pacientes/{id}` – Detalhar Paciente
+### **3.3 GET /pacientes/{id}**
 
-**Response (200 OK):**
+Retorna as informações completas de um paciente específico.
+
+**Response (200 OK)**
 
 ```json
 {
@@ -148,9 +165,11 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 
 ---
 
-### 3.4 `PUT /pacientes/{id}` – Atualização Completa
+### **3.4 PUT /pacientes/{id}**
 
-**Request:**
+Atualiza **todos os campos** de um paciente.
+
+**Request**
 
 ```json
 {
@@ -167,7 +186,7 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 }
 ```
 
-**Response (200 OK):**
+**Response (200 OK)**
 
 ```json
 {
@@ -186,9 +205,11 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 
 ---
 
-### 3.5 `DELETE /pacientes/{id}` – Remover Paciente
+### **3.5 DELETE /pacientes/{id}**
 
-**Response (204 No Content):**
+Remove permanentemente um paciente.
+
+**Response (204 No Content)**
 
 ```json
 {}
@@ -196,9 +217,11 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 
 ---
 
-### 3.6 `GET /pacientes/{id}/vitals` – Sinais Vitais
+### **3.6 GET /pacientes/{id}/vitals**
 
-**Response (200 OK):**
+Retorna apenas os sinais vitais do paciente.
+
+**Response (200 OK)**
 
 ```json
 {
@@ -213,71 +236,63 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 
 ---
 
-### 3.7 `PATCH /pacientes/{id}/peso` – Atualizar Peso
+### **3.7 PATCH /pacientes/{id}/peso**
 
-**Request:**
+**Request**
 
 ```json
-{
-  "peso": 78.0
-}
+{ "peso": 78.0 }
 ```
 
-**Response (200 OK):**
+**Response (200 OK)**
 
 ```json
-{
-  "mensagem": "Peso atualizado com sucesso."
-}
+{ "mensagem": "Peso atualizado com sucesso." }
 ```
 
 ---
 
-### 3.8 `PATCH /pacientes/{id}/idade` – Atualizar Idade
+### **3.8 PATCH /pacientes/{id}/idade**
 
-**Request:**
+**Request**
 
 ```json
-{
-  "idade": 35
-}
+{ "idade": 35 }
 ```
 
-**Response (200 OK):**
+**Response (200 OK)**
 
 ```json
-{
-  "mensagem": "Idade atualizada com sucesso."
-}
+{ "mensagem": "Idade atualizada com sucesso." }
 ```
 
 ---
 
-### 3.9 `PATCH /pacientes/{id}/pressao` – Atualizar Pressão Arterial
+### **3.9 PATCH /pacientes/{id}/pressao**
 
-**Request:**
+**Request**
 
 ```json
-{
-  "pressao_arterial": "130/85"
-}
+{ "pressao_arterial": "130/85" }
 ```
 
-**Response (200 OK):**
+**Response (200 OK)**
 
 ```json
-{
-  "mensagem": "Pressão arterial atualizada com sucesso."
-}
+{ "mensagem": "Pressão arterial atualizada com sucesso." }
 ```
 
 ---
 
 ## **4. Endpoints de Agentes de Saúde**
 
-### 4.1 `POST /agentes` – Criar Agente de Saúde
+---
 
-**Request:**
+### **4.1 POST /agentes**
+
+Cria um novo agente de saúde.
+
+**Request**
 
 ```json
 {
@@ -289,7 +304,7 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 }
 ```
 
-**Response (201 Created):**
+**Response (201 Created)**
 
 ```json
 {
@@ -303,9 +318,9 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 
 ---
 
-### 4.2 `GET /agentes` – Listar Agentes
+### **4.2 GET /agentes**
 
-**Response (200 OK):**
+**Response (200 OK)**
 
 ```json
 [
@@ -327,9 +342,9 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 
 ---
 
-### 4.3 `GET /agentes/{id}` – Detalhar Agente
+### **4.3 GET /agentes/{id}**
 
-**Response (200 OK):**
+**Response (200 OK)**
 
 ```json
 {
@@ -343,29 +358,25 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 
 ---
 
-### 4.4 `PATCH /agentes/{id}` – Atualizar Dados do Agente
+### **4.4 PATCH /agentes/{id}**
 
-**Request:**
+**Request**
 
 ```json
-{
-  "cargo": "Coordenador Médico"
-}
+{ "cargo": "Coordenador Médico" }
 ```
 
-**Response (200 OK):**
+**Response (200 OK)**
 
 ```json
-{
-  "mensagem": "Dados do agente atualizados com sucesso."
-}
+{ "mensagem": "Dados do agente atualizados com sucesso." }
 ```
 
 ---
 
-### 4.5 `DELETE /agentes/{id}` – Remover Agente
+### **4.5 DELETE /agentes/{id}**
 
-**Response (204 No Content):**
+**Response (204 No Content)**
 
 ```json
 {}
@@ -375,14 +386,14 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 
 ## **5. Endpoints de Relatórios**
 
-> 🔒 **Acesso exclusivo de Agentes de Saúde.**
-> Pacientes **não podem** criar, ler, nem atualizar relatórios.
+> 🔒 **Acesso exclusivo dos Agentes de Saúde.**
+> Pacientes não podem criar, visualizar ou modificar relatórios.
 
 ---
 
-### 5.1 `POST /relatorios` – Criar Relatório
+### **5.1 POST /relatorios**
 
-**Request:**
+**Request**
 
 ```json
 {
@@ -395,25 +406,7 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 }
 ```
 
-**Response (201 Created):**
-
-```json
-{
-  "id": 10,
-  "id_paciente": 1,
-  "id_agente": 2,
-  "completo": false,
-  "incompleto": true,
-  "observacao": "Paciente apresenta febre leve. Recomendado repouso e hidratação.",
-  "data": "2025-10-14T10:00:00Z"
-}
-```
-
----
-
-### 5.2 `GET /relatorios/{id}` – Detalhar Relatório
-
-**Response (200 OK):**
+**Response (201 Created)**
 
 ```json
 {
@@ -429,9 +422,30 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 
 ---
 
-### 5.3 `GET /pacientes/{id}/relatorios` – Listar Relatórios do Paciente *(apenas para agentes)*
+### **5.2 GET /relatorios/{id}**
 
-**Response (200 OK):**
+**Response (200 OK)**
+
+```json
+{
+  "id": 10,
+  "id_paciente": 1,
+  "id_agente": 2,
+  "completo": false,
+  "incompleto": true,
+  "observacao": "Paciente apresenta febre leve. Recomendado repouso e hidratação.",
+  "data": "2025-10-14T10:00:00Z"
+}
+```
+
+---
+
+### **5.3 GET /pacientes/{id}/relatorios**
+
+Lista todos os relatórios vinculados a um paciente.
+**Somente acessível por agentes.**
+
+**Response (200 OK)**
 
 ```json
 [
@@ -454,33 +468,29 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 
 ---
 
-### 5.4 `PUT /relatorios/{id}/completo` – Marcar Como Completo
+### **5.4 PUT /relatorios/{id}/completo**
 
-**Response (200 OK):**
+**Response (200 OK)**
 
 ```json
-{
-  "mensagem": "Relatório marcado como completo."
-}
+{ "mensagem": "Relatório marcado como completo." }
 ```
 
 ---
 
-### 5.5 `PUT /relatorios/{id}/incompleto` – Marcar Como Incompleto
+### **5.5 PUT /relatorios/{id}/incompleto**
 
-**Response (200 OK):**
+**Response (200 OK)**
 
 ```json
-{
-  "mensagem": "Relatório marcado como incompleto."
-}
+{ "mensagem": "Relatório marcado como incompleto." }
 ```
 
 ---
 
-### 5.6 `GET /relatorios/pendentes` – Listar Relatórios Incompletos
+### **5.6 GET /relatorios/pendentes**
 
-**Response (200 OK):**
+**Response (200 OK)**
 
 ```json
 [
@@ -498,12 +508,12 @@ API RESTful para **monitoramento de pacientes**, **gestão de profissionais de s
 
 ---
 
-## **Resumo Final**
+## **6. Resumo Técnico**
 
-| Entidade            | Total de Endpoints | Acesso                                     |
-| ------------------- | ------------------ | ------------------------------------------ |
-| **Paciente**        | 9                  | Acesso ao próprio cadastro e sinais vitais |
-| **Agente de Saúde** | 5                  | Acesso total (pacientes + relatórios)      |
-| **Relatório**       | 6                  | Exclusivo de Agentes de Saúde              |
+| Entidade            | Total de Endpoints | Permissão                                |
+| ------------------- | ------------------ | ---------------------------------------- |
+| **Paciente**        | 9                  | Acesso apenas aos próprios dados         |
+| **Agente de Saúde** | 5                  | Acesso completo a pacientes e relatórios |
+| **Relatório**       | 6                  | Exclusivo de agentes de saúde            |
 
 ---
