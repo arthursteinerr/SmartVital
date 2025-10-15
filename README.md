@@ -30,7 +30,6 @@ Representa o indivíduo monitorado pela plataforma.
 | Campo              | Tipo   | Descrição                         |
 | ------------------ | ------ | --------------------------------- |
 | `id`               | number | Identificador único               |
-| `senha`            | string | Senha de autenticação do paciente |
 | `temperatura`      | number | Temperatura corporal (°C)         |
 | `indice_glicemico` | number | Índice glicêmico (mg/dL)          |
 | `pressao_arterial` | string | Exemplo: `"120/80"`               |
@@ -51,7 +50,7 @@ Inclui **médicos, enfermeiros e técnicos**. Responsável por supervisionar pac
 | ---------------- | ------------------- | ------------------------------------------------ |
 | `id`             | number              | Identificador único                              |
 | `nome`           | string              | Nome completo                                    |
-| `senha`          | string              | Senha de acesso do agente                        |
+| ``          | string              |  de acesso do agente                        |
 | `cargo`          | string              | Exemplo: `"Médico"`, `"Enfermeiro"`, `"Técnico"` |
 | `crm`            | string *(opcional)* | Registro profissional do médico                  |
 | `dataDeAdmissao` | string              | Data de admissão (`YYYY-MM-DD`)                  |
@@ -89,7 +88,6 @@ Cria um novo paciente no sistema.
 
 ```json
 {
-  "senha": "senhaSegura",
   "idade": 30,
   "peso": 75.0,
   "altura": 1.70
@@ -101,7 +99,6 @@ Cria um novo paciente no sistema.
 ```json
 {
   "id": 1,
-  "senha": "senhaSegura",
   "idade": 30,
   "peso": 75.0,
   "altura": 1.70,
@@ -150,7 +147,6 @@ Retorna as informações completas de um paciente específico.
 ```json
 {
   "id": 1,
-  "senha": "senhaSegura",
   "idade": 30,
   "peso": 75.0,
   "altura": 1.70,
@@ -173,7 +169,6 @@ Atualiza **todos os campos** de um paciente.
 
 ```json
 {
-  "senha": "novaSenha",
   "idade": 31,
   "peso": 76.0,
   "altura": 1.70,
