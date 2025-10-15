@@ -50,9 +50,9 @@ Inclui **médicos, enfermeiros e técnicos**. Responsável por supervisionar pac
 | ---------------- | ------------------- | ------------------------------------------------ |
 | `id`             | number              | Identificador único                              |
 | `nome`           | string              | Nome completo                                    |
-| ``          | string              |  de acesso do agente                        |
+| `senha`          | string              | Senha de acesso do agente                        |
 | `cargo`          | string              | Exemplo: `"Médico"`, `"Enfermeiro"`, `"Técnico"` |
-| `crm`            | string *(opcional)* | Registro profissional do médico                  |
+| `crm-corem`      | string *(opcional)* | Registro profissional do médico e enfermeiro     |
 | `dataDeAdmissao` | string              | Data de admissão (`YYYY-MM-DD`)                  |
 
 ---
@@ -66,8 +66,7 @@ Gerado exclusivamente por **agentes de saúde** para acompanhamento de pacientes
 | `id`          | number  | Identificador único                    |
 | `id_paciente` | number  | ID do paciente relacionado             |
 | `id_agente`   | number  | ID do agente responsável               |
-| `completo`    | boolean | Indica se o relatório foi finalizado   |
-| `incompleto`  | boolean | Indica se o relatório está pendente    |
+| `completo`    | boolean | Indica se o relatório fora finalizado  |
 | `observacao`  | string  | Texto livre com observações clínicas   |
 | `data`        | string  | Data ISO-8601 (`YYYY-MM-DDTHH:mm:ssZ`) |
 
@@ -395,7 +394,6 @@ Cria um novo agente de saúde.
   "id_paciente": 1,
   "id_agente": 2,
   "completo": false,
-  "incompleto": true,
   "observacao": "Paciente apresenta febre leve. Recomendado repouso e hidratação.",
   "data": "2025-10-14T10:00:00Z"
 }
@@ -409,7 +407,6 @@ Cria um novo agente de saúde.
   "id_paciente": 1,
   "id_agente": 2,
   "completo": false,
-  "incompleto": true,
   "observacao": "Paciente apresenta febre leve. Recomendado repouso e hidratação.",
   "data": "2025-10-14T10:00:00Z"
 }
@@ -427,7 +424,6 @@ Cria um novo agente de saúde.
   "id_paciente": 1,
   "id_agente": 2,
   "completo": false,
-  "incompleto": true,
   "observacao": "Paciente apresenta febre leve. Recomendado repouso e hidratação.",
   "data": "2025-10-14T10:00:00Z"
 }
@@ -447,14 +443,12 @@ Lista todos os relatórios vinculados a um paciente.
   {
     "id": 10,
     "completo": false,
-    "incompleto": true,
     "observacao": "Paciente apresenta febre leve. Recomendado repouso e hidratação.",
     "data": "2025-10-14T10:00:00Z"
   },
   {
     "id": 11,
     "completo": true,
-    "incompleto": false,
     "observacao": "Paciente está estável, alta médica recomendada.",
     "data": "2025-10-13T15:30:00Z"
   }
@@ -494,7 +488,6 @@ Lista todos os relatórios vinculados a um paciente.
     "id_paciente": 1,
     "id_agente": 2,
     "completo": false,
-    "incompleto": true,
     "observacao": "Paciente apresenta febre leve. Recomendado repouso e hidratação.",
     "data": "2025-10-14T10:00:00Z"
   }
