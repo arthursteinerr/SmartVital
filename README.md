@@ -1,6 +1,6 @@
 ---
 
-![Logo do Projeto](ImagemProjeto(SmartVitals).png)
+![Logo do Projeto](src/img/ImagemProjeto(SmartVitals).png)
 
 # 🩺 **SmartVital**
 
