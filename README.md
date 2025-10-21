@@ -4,7 +4,11 @@
 
 A **SmartVital API** é uma aplicação RESTful projetada para o **monitoramento de pacientes**, **gestão de profissionais de saúde** e **emissão de relatórios clínicos** de forma digital e segura.
 
-Com foco em **ambientes hospitalares, UTIs e clínicas**, a SmartVital permite **gerenciamento centralizado de dados médicos**, **padronização de informações** e **agilidade no atendimento clínico**.
+Voltada a **hospitais, UTIs e clínicas**, a SmartVital possibilita:
+
+* **Gerenciamento centralizado de dados médicos**,
+* **Padronização de informações clínicas**,
+* **Agilidade e confiabilidade no atendimento**.
 
 ---
 
@@ -36,63 +40,101 @@ Com foco em **ambientes hospitalares, UTIs e clínicas**, a SmartVital permite *
 
 ## 🧩 **2. Modelagem de Dados**
 
+O modelo de dados é composto por três entidades principais: **Paciente**, **Agente de Saúde** e **Relatório Clínico**.
+
+Cada uma representa um componente essencial do sistema SmartVital e segue boas práticas de normalização e rastreabilidade.
+
 ---
 
 ### 👤 **Paciente**
 
 Entidade que representa um paciente no sistema.
 
-| Campo              | Tipo   | Descrição                                                                                       |
-| :----------------- | :----- | :---------------------------------------------------------------------------------------------- |
-| `id`               | number | Identificador único do paciente. Esse campo é gerado automaticamente pelo sistema.              |
-| `nome`             | string | Nome completo do paciente.                                                                      |
-| `idade`            | number | Idade do paciente, expressa em anos completos.                                                  |
-| `peso`             | number | Peso do paciente, medido em quilogramas (kg).                                                   |
-| `altura`           | number | Altura do paciente, medida em metros (m).                                                       |
-| `temperatura`      | number | Temperatura corporal do paciente, medida em graus Celsius (°C).                                 |
-| `indice_glicemico` | number | Nível de glicose no sangue do paciente, em miligramas por decilitro (mg/dL).                    |
-| `pressao_arterial` | string | Pressão arterial do paciente, no formato `"sistólica/diastólica"`, como por exemplo `"120/80"`. |
-| `saturacao`        | number | Saturação de oxigênio no sangue do paciente, expressa em porcentagem (%).                       |
-| `pulso`            | number | Frequência cardíaca do paciente, medida em batimentos por minuto (bpm).                         |
-| `respiracao`       | number | Frequência respiratória do paciente, medida em respirações por minuto (rpm).                    |
+| Campo              | Tipo   | Descrição                                                             |
+| :----------------- | :----- | :-------------------------------------------------------------------- |
+| `id`               | number | Identificador único do paciente (gerado automaticamente).             |
+| `nome`             | string | Nome completo do paciente.                                            |
+| `idade`            | number | Idade do paciente (em anos completos).                                |
+| `peso`             | number | Peso corporal em quilogramas (kg).                                    |
+| `altura`           | number | Altura em metros (m).                                                 |
+| `temperatura`      | number | Temperatura corporal (°C).                                            |
+| `indice_glicemico` | number | Nível de glicose no sangue (mg/dL).                                   |
+| `pressao_arterial` | string | Pressão arterial no formato `"sistólica/diastólica"`, ex: `"120/80"`. |
+| `saturacao`        | number | Saturação de oxigênio no sangue (%).                                  |
+| `pulso`            | number | Frequência cardíaca (bpm).                                            |
+| `respiracao`       | number | Frequência respiratória (rpm).                                        |
 
 ---
 
-### 👤 **Agente de Saúde**
+### 🧑‍⚕️ **Agente de Saúde**
 
-Entidade que representa um profissional de saúde no sistema, como médicos, enfermeiros e outros.
+Representa médicos, enfermeiros ou outros profissionais.
 
-| Campo                   | Tipo   | Descrição                                                                                                    |
-| :---------------------- | :----- | :----------------------------------------------------------------------------------------------------------- |
-| `id`                    | number | Identificador único do agente de saúde. Esse campo é gerado automaticamente pelo sistema.                    |
-| `nome`                  | string | Nome completo do agente de saúde.                                                                            |
-| `senha`                 | string | Senha ou credencial de acesso do agente para autenticação no sistema. (Deve ser armazenada de forma segura). |
-| `cargo`                 | string | Cargo ou função do agente de saúde, por exemplo: `"Médico"`, `"Enfermeiro"`, `"Fisioterapeuta"`.             |
-| `registro_profissional` | string | Registro profissional do agente, como CRM (para médicos), COREN (para enfermeiros), etc.                     |
-| `data_admissao`         | string | Data de admissão do agente no sistema, no formato ISO (`YYYY-MM-DD`).                                        |
+| Campo                   | Tipo   | Descrição                                                             |
+| :---------------------- | :----- | :-------------------------------------------------------------------- |
+| `id`                    | number | Identificador único do agente (gerado automaticamente).               |
+| `nome`                  | string | Nome completo do profissional.                                        |
+| `senha`                 | string | Credencial de acesso (armazenada de forma segura).                    |
+| `cargo`                 | string | Função exercida, como `"Médico"`, `"Enfermeiro"`, `"Fisioterapeuta"`. |
+| `registro_profissional` | string | Registro profissional (CRM, COREN, etc.).                             |
+| `data_admissao`         | string | Data de admissão no formato ISO (`YYYY-MM-DD`).                       |
 
 ---
 
 ### 📄 **Relatório Clínico**
 
-Entidade usada para registrar observações clínicas feitas por um agente de saúde sobre um paciente. Relatórios podem ser completos ou pendentes.
+Armazena observações médicas registradas por agentes sobre pacientes.
 
-| Campo           | Tipo    | Descrição                                                                                              |
-| :-------------- | :------ | :----------------------------------------------------------------------------------------------------- |
-| `id`            | number  | Identificador único do relatório clínico. Esse campo é gerado automaticamente pelo sistema.            |
-| `id_paciente`   | number  | ID do paciente associado ao relatório clínico. Este campo faz referência ao ID do paciente no sistema. |
-| `id_agente`     | number  | ID do agente de saúde que gerou o relatório. Esse campo faz referência ao ID do agente no sistema.     |
-| `observacao`    | string  | Descrição detalhada sobre o estado de saúde do paciente, observações clínicas feitas pelo agente.      |
-| `data_registro` | string  | Data e hora de criação do relatório, no formato ISO (`YYYY-MM-DDTHH:mm:ssZ`).                          |
-| `completo`      | boolean | Indicador que define se o relatório está completo (`true`) ou se ainda está pendente (`false`).        |
-
----
-
-## 👥 **3. Endpoints de Pacientes**
+| Campo           | Tipo    | Descrição                                                                          |
+| :-------------- | :------ | :--------------------------------------------------------------------------------- |
+| `id`            | number  | Identificador único do relatório.                                                  |
+| `id_paciente`   | number  | ID do paciente associado (FK de `pacientes`).                                      |
+| `id_agente`     | number  | ID do agente de saúde que criou o relatório (FK de `agentes`).                     |
+| `observacao`    | string  | Texto descritivo sobre o estado clínico do paciente.                               |
+| `data_registro` | string  | Data/hora de criação no formato ISO (`YYYY-MM-DDTHH:mm:ssZ`).                      |
+| `completo`      | boolean | Indica se o relatório foi concluído (`true`) ou ainda está em andamento (`false`). |
 
 ---
 
-### **3.1. POST /pacientes**
+## 🧱 **3. Modelo Entidade-Relacionamento (MER) - SmartVital**
+
+O modelo **SmartVital** foi projetado com **três entidades principais** e **relacionamentos 1:N** entre pacientes, agentes e relatórios.
+
+| Entidade      | Chave Primária       | Atributos Principais                                                                    |
+| :------------ | :------------------- | :-------------------------------------------------------------------------------------- |
+| **Paciente**  | `id_paciente` (INT)  | `nome`, `idade`, `peso`, `altura`, `temperatura`, `pressao_arterial`, `saturacao`, etc. |
+| **Agente**    | `id_agente` (INT)    | `nome`, `cargo`, `registro_profissional`, `data_admissao`.                              |
+| **Relatorio** | `id_relatorio` (INT) | `data_registro`, `completo`, `observacao`.                                              |
+
+### 🔗 **Relacionamentos e Cardinalidades**
+
+1. **Paciente ⇄ Relatorio (1:N)**
+
+   * Um **Paciente** possui **um ou vários Relatórios** (`1:N`).
+   * Cada **Relatório** pertence a **um único Paciente** (`N:1`).
+
+2. **Agente ⇄ Relatorio (1:N, com participação opcional)**
+
+   * Um **Agente** pode emitir **um ou vários Relatórios** (`1:N`).
+   * Um **Relatório** pode ou não ter um agente associado (`0:N`), permitindo relatórios automáticos ou pendentes.
+
+### 🧩 **Implementação Relacional**
+
+* **Tabelas principais:** `pacientes`, `agentes`, `relatorios`.
+* **Chaves estrangeiras:**
+
+  * `relatorios.id_paciente` → `pacientes.id` (**obrigatória**)
+  * `relatorios.id_agente` → `agentes.id` (**opcional / NULL permitido**)
+* **Integridade referencial garantida** por restrições de chave estrangeira (FK).
+* **Remoção em cascata** pode ser aplicada ao deletar um paciente, se desejado.
+
+---
+
+## 👥 **4. Endpoints de Pacientes**
+
+---
+
+### **4.1. POST /pacientes**
 
 Cria um novo paciente no sistema.
 
@@ -145,7 +187,7 @@ A resposta retorna os dados do paciente criado, incluindo o ID gerado automatica
 
 ---
 
-### **3.2. GET /pacientes**
+### **4.2. GET /pacientes**
 
 Obtém uma lista de todos os pacientes registrados no sistema.
 
@@ -178,7 +220,7 @@ A resposta retorna uma lista com os pacientes cadastrados, com informações com
 
 ---
 
-### **3.3. GET /pacientes/{id}**
+### **4.3. GET /pacientes/{id}**
 
 Busca as informações detalhadas de um paciente específico, identificado pelo seu `id`.
 
@@ -204,7 +246,7 @@ Retorna os dados completos do paciente, incluindo informações básicas e sinai
 
 ---
 
-### **3.4. PUT /pacientes/{id}**
+### **4.4. PUT /pacientes/{id}**
 
 Atualiza **todos os campos** de um paciente específico, incluindo dados pessoais e sinais vitais.
 
@@ -252,7 +294,7 @@ A resposta retorna os dados atualizados do paciente.
 
 ---
 
-### **3.5. PATCH /pacientes/{id}/peso**
+### **4.5. PATCH /pacientes/{id}/peso**
 
 Atualiza **somente o peso** do paciente.
 
@@ -277,7 +319,7 @@ Retorna o paciente com o peso atualizado.
 
 ---
 
-### **3.6. PATCH /pacientes/{id}/idade**
+### **4.6. PATCH /pacientes/{id}/idade**
 
 Atualiza **somente a idade** do paciente.
 
@@ -302,7 +344,7 @@ Retorna o paciente com a idade atualizada.
 
 ---
 
-### **3.7. PATCH /pacientes/{id}/pressao**
+### **4.7. PATCH /pacientes/{id}/pressao**
 
 Atualiza **somente a pressão arterial** do paciente.
 
@@ -327,7 +369,7 @@ Retorna o paciente com a pressão arterial atualizada.
 
 ---
 
-### **3.8. GET /pacientes/{id}/sinais-vitais**
+### **4.8. GET /pacientes/{id}/sinais-vitais**
 
 Retorna **somente os sinais vitais** do paciente, sem dados pessoais.
 
@@ -347,7 +389,7 @@ Retorna **somente os sinais vitais** do paciente, sem dados pessoais.
 
 ---
 
-### **3.9. DELETE /pacientes/{id}**
+### **4.9. DELETE /pacientes/{id}**
 
 Remove permanentemente um paciente do sistema.
 
@@ -361,11 +403,11 @@ Sem conteúdo
 
 ---
 
-## 👤 **4. Endpoints de Agentes de Saúde**
+## 👤 **5. Endpoints de Agentes de Saúde**
 
 ---
 
-### **4.1. POST /agentes**
+### **5.1. POST /agentes**
 
 Cria um novo agente de saúde no sistema.
 
@@ -405,7 +447,7 @@ Retorna o agente recém-criado.
 
 ---
 
-### **4.2. GET /agentes**
+### **5.2. GET /agentes**
 
 Lista todos os agentes de saúde registrados.
 
@@ -432,7 +474,7 @@ Lista todos os agentes de saúde registrados.
 
 ---
 
-### **4.3. GET /agentes/{id}**
+### **5.3. GET /agentes/{id}**
 
 Retorna as informações de um agente específico.
 
@@ -450,7 +492,7 @@ Retorna as informações de um agente específico.
 
 ---
 
-### **4.4. PATCH /agentes/{id}**
+### **5.4. PATCH /agentes/{id}**
 
 Atualiza **informações parciais
 
@@ -479,7 +521,7 @@ Atualiza **informações parciais
 
 ---
 
-### **4.5. DELETE /agentes/{id}**
+### **5.5. DELETE /agentes/{id}**
 
 Remove permanentemente um agente de saúde do sistema.
 
@@ -493,11 +535,11 @@ Sem conteúdo
 
 ---
 
-## 📋 **5. Endpoints de Relatórios Clínicos**
+## 📋 **6. Endpoints de Relatórios Clínicos**
 
 ---
 
-### **5.1. POST /relatorios**
+### **6.1. POST /relatorios**
 
 Cria um novo relatório clínico associando um paciente e um agente de saúde.
 
@@ -534,7 +576,7 @@ Cria um novo relatório clínico associando um paciente e um agente de saúde.
 
 ---
 
-### **5.2. GET /relatorios/{id}**
+### **6.2. GET /relatorios/{id}**
 
 Retorna os detalhes de um relatório clínico específico.
 
@@ -553,7 +595,7 @@ Retorna os detalhes de um relatório clínico específico.
 
 ---
 
-### **5.3. GET /pacientes/{id}/relatorios**
+### **6.3. GET /pacientes/{id}/relatorios**
 
 Lista todos os relatórios clínicos associados a um paciente específico.
 
@@ -582,7 +624,7 @@ Lista todos os relatórios clínicos associados a um paciente específico.
 
 ---
 
-### **5.4. PATCH /relatorios/{id}**
+### **6.4. PATCH /relatorios/{id}**
 
 Atualiza observações ou o status de conclusão de um relatório clínico.
 
@@ -610,7 +652,7 @@ Atualiza observações ou o status de conclusão de um relatório clínico.
 
 ---
 
-### **5.5. GET /relatorios/pendentes**
+### **6.5. GET /relatorios/pendentes**
 
 Lista todos os relatórios clínicos ainda não concluídos (`completo: false`).
 
@@ -631,7 +673,7 @@ Lista todos os relatórios clínicos ainda não concluídos (`completo: false`).
 
 ---
 
-## 🧾 **6. Resumo Técnico**
+## 🧾 **7. Resumo Técnico**
 
 | Entidade              | Endpoints | Acesso            |
 | :-------------------- | :-------- | :---------------- |
