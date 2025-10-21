@@ -112,14 +112,6 @@ O modelo é baseado em relacionamentos 1:N que garantem a integridade referencia
 
 -----
 
-## 2.5 🧾 Resumo Técnico Consolidado
-
-| Entidade | Propósito Principal | Status da Autenticação | Formato de Comunicação |
-| :--- | :--- | :--- | :--- |
-| **Paciente** | Monitoramento e Dados Vitais | Público e Agentes | JSON |
-| **Agente de Saúde** | Gestão de Profissionais | Apenas Agentes | JSON |
-| **Relatório Clínico** | Registro de Evolução | Apenas Agentes | JSON |
-
 ## 👥 3. Endpoints de Pacientes (`/pacientes`)
 
 ### 3.1. POST `/pacientes` (Criação)
