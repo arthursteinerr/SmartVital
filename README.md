@@ -1,173 +1,143 @@
-![Logo do Projeto](src/img/ImagemProjeto\(SmartVitals\).png)
+![Logo do Projeto](src/img/ImagemProjeto(SmartVitals).png)
 
-# 🩺 **SmartVital API**
+# 🩺 SmartVital API
 
-A **SmartVital API** é uma aplicação RESTful projetada para o **monitoramento de pacientes**, **gestão de profissionais de saúde** e **emissão de relatórios clínicos** de forma digital e segura.
+**Plataforma de Gestão e Monitoramento de Saúde**
 
-Voltada a **hospitais, UTIs e clínicas**, a SmartVital possibilita:
+A **SmartVital API** é uma aplicação **RESTful** desenvolvida para a gestão digital e segura de dados críticos em saúde. Ela centraliza o **monitoramento de pacientes**, o **cadastro de profissionais de saúde (Agentes)** e a **emissão rastreável de relatórios clínicos**.
 
-* **Gerenciamento centralizado de dados médicos**,
-* **Padronização de informações clínicas**,
-* **Agilidade e confiabilidade no atendimento**.
+**Público-Alvo:** Hospitais, Unidades de Terapia Intensiva (UTIs) e Clínicas.
 
----
+| Capacidade | Benefício |
+| :--- | :--- |
+| **Monitoramento Integrado** | Coleta e visualização de sinais vitais em um ponto central. |
+| **Padronização de Dados** | Garante a uniformidade e confiabilidade das informações clínicas. |
+| **Rastreabilidade** | Associa cada ação e relatório a um profissional responsável. |
 
-## ⚙️ **1. Especificações da API**
+-----
 
-| Parâmetro              | Descrição                         |
-| :--------------------- | :-------------------------------- |
-| **Arquitetura**        | RESTful                           |
-| **Formato de Dados**   | JSON                              |
-| **Codificação**        | UTF-8                             |
-| **Autenticação**       | Nenhuma (modo de desenvolvimento) |
-| **Códigos de Sucesso** | 200, 201, 204                     |
-| **Códigos de Erro**    | 400, 404, 500                     |
+## 1\. ⚙️ Especificações Técnicas e Protocolo
 
----
+Detalhes sobre a arquitetura de comunicação da API.
 
-### 📡 **1.1. Códigos HTTP**
+| Parâmetro | Detalhe | Observações |
+| :--- | :--- | :--- |
+| **Arquitetura** | RESTful | Utiliza verbos HTTP para manipulação de recursos. |
+| **Formato de Dados** | JSON | Utilizado para *Requests* e *Responses*. |
+| **Codificação** | UTF-8 | Suporte completo a caracteres especiais. |
+| **Autenticação** | Nenhuma | **Modo de Desenvolvimento/Simulação**. Requer JWT/OAuth2 em Produção. |
+| **Códigos de Sucesso** | 200, 201, 204 | Padrão REST para operações bem-sucedidas. |
+| **Códigos de Erro** | 400, 404, 500 | Padrão REST para indicar falhas (Cliente ou Servidor). |
 
-| Código | Status                | Descrição                         |
-| :----- | :-------------------- | :-------------------------------- |
-| `200`  | OK                    | Requisição bem-sucedida           |
-| `201`  | Created               | Recurso criado com sucesso        |
-| `204`  | No Content            | Requisição processada sem retorno |
-| `400`  | Bad Request           | Dados inválidos                   |
-| `404`  | Not Found             | Recurso não encontrado            |
-| `500`  | Internal Server Error | Erro interno do servidor          |
+### 1.1. Códigos de Resposta HTTP (Detalhado)
 
----
+| Código | Status | Descrição | Uso Principal |
+| :--- | :--- | :--- | :--- |
+| `200` | OK | Requisição bem-sucedida. | Retorno de dados, Atualização (PUT, PATCH). |
+| `201` | Created | Novo recurso criado com sucesso. | Criação de novos recursos (POST). |
+| `204` | No Content | Requisição processada, sem corpo de resposta. | Remoção de recursos (DELETE). |
+| `400` | Bad Request | Erro nos dados enviados (ex: JSON inválido, campos obrigatórios ausentes). | Falha de validação. |
+| `404` | Not Found | Recurso solicitado (endpoint ou ID) não encontrado. | Tentativa de acessar um recurso inexistente. |
+| `500` | Internal Server Error | Falha inesperada no servidor. | Erro interno do sistema. |
 
-## 🧩 **2. Modelagem de Dados**
+-----
 
-O modelo de dados é composto por três entidades principais: **Paciente**, **Agente de Saúde** e **Relatório Clínico**.
+## 2\. 🧩 Modelagem de Dados (Schema Completo)
 
-Cada uma representa um componente essencial do sistema SmartVital e segue boas práticas de normalização e rastreabilidade.
+O modelo de dados é composto por três entidades principais inter-relacionadas, seguindo boas práticas de normalização e rastreabilidade.
 
----
+### 2.1. 👤 Entidade: Paciente
 
-### 👤 **Paciente**
+Representa o indivíduo sob monitoramento, incluindo seus dados básicos e o estado mais recente dos sinais vitais.
 
-Entidade que representa um paciente no sistema.
+| Campo | Tipo | Descrição | Restrição | Unidade/Exemplo |
+| :--- | :--- | :--- | :--- | :--- |
+| `id` | `number` (Int) | Identificador único do paciente. | **PK**, Auto-gerado. | - |
+| `nome` | `string` | Nome completo. | Obrigatório. | - |
+| `idade` | `number` (Int) | Idade em anos. | Opcional (`null`). | Anos |
+| `peso` | `number` (Decimal) | Massa corporal. | Opcional (`null`). | kg |
+| `altura` | `number` (Decimal) | Altura. | Opcional (`null`). | m |
+| `temperatura` | `number` (Decimal) | Temperatura corporal. | Opcional (`null`). | °C |
+| `indice_glicemico` | `number` (Int) | Nível de glicose no sangue. | Opcional (`null`). | mg/dL |
+| `pressao_arterial` | `string` | Pressão arterial no formato `"sistólica/diastólica"`. | Opcional (`null`). | `"120/80"` |
+| `saturacao` | `number` (Int) | Saturação de oxigênio no sangue. | Opcional (`null`). | % |
+| `pulso` | `number` (Int) | Frequência cardíaca. | Opcional (`null`). | bpm |
+| `respiracao` | `number` (Int) | Frequência respiratória. | Opcional (`null`). | rpm |
 
-| Campo              | Tipo   | Descrição                                                             |
-| :----------------- | :----- | :-------------------------------------------------------------------- |
-| `id`               | number | Identificador único do paciente (gerado automaticamente).             |
-| `nome`             | string | Nome completo do paciente.                                            |
-| `idade`            | number | Idade do paciente (em anos completos).                                |
-| `peso`             | number | Peso corporal em quilogramas (kg).                                    |
-| `altura`           | number | Altura em metros (m).                                                 |
-| `temperatura`      | number | Temperatura corporal (°C).                                            |
-| `indice_glicemico` | number | Nível de glicose no sangue (mg/dL).                                   |
-| `pressao_arterial` | string | Pressão arterial no formato `"sistólica/diastólica"`, ex: `"120/80"`. |
-| `saturacao`        | number | Saturação de oxigênio no sangue (%).                                  |
-| `pulso`            | number | Frequência cardíaca (bpm).                                            |
-| `respiracao`       | number | Frequência respiratória (rpm).                                        |
+### 2.2. 🧑‍⚕️ Entidade: Agente de Saúde
 
----
+Representa médicos, enfermeiros ou outros profissionais com credenciais de acesso e registro.
 
-### 🧑‍⚕️ **Agente de Saúde**
+| Campo | Tipo | Descrição | Restrição | Formato/Exemplo |
+| :--- | :--- | :--- | :--- | :--- |
+| `id` | `number` (Int) | Identificador único do agente. | **PK**, Auto-gerado. | - |
+| `nome` | `string` | Nome completo do profissional. | Obrigatório. | - |
+| `senha` | `string` | Credencial de acesso (deve ser armazenada com hash). | Obrigatório. | - |
+| `cargo` | `string` | Função exercida na instituição. | Obrigatório. | `"Médico"`, `"Enfermeiro"`, `"Fisioterapeuta"` |
+| `registro_profissional` | `string` | Número de registro no conselho de classe. | Obrigatório, Único. | CRM, COREN, etc. |
+| `data_admissao` | `string` | Data de admissão na instituição. | Obrigatório. | ISO (`YYYY-MM-DD`) |
 
-Representa médicos, enfermeiros ou outros profissionais.
+### 2.3. 📄 Entidade: Relatório Clínico
 
-| Campo                   | Tipo   | Descrição                                                             |
-| :---------------------- | :----- | :-------------------------------------------------------------------- |
-| `id`                    | number | Identificador único do agente (gerado automaticamente).               |
-| `nome`                  | string | Nome completo do profissional.                                        |
-| `senha`                 | string | Credencial de acesso (armazenada de forma segura).                    |
-| `cargo`                 | string | Função exercida, como `"Médico"`, `"Enfermeiro"`, `"Fisioterapeuta"`. |
-| `registro_profissional` | string | Registro profissional (CRM, COREN, etc.).                             |
-| `data_admissao`         | string | Data de admissão no formato ISO (`YYYY-MM-DD`).                       |
+Armazena as observações médicas registradas por agentes sobre o estado dos pacientes.
 
----
+| Campo | Tipo | Descrição | Restrição | Formato/Exemplo |
+| :--- | :--- | :--- | :--- | :--- |
+| `id` | `number` (Int) | Identificador único do relatório. | **PK**, Auto-gerado. | - |
+| `id_paciente` | `number` (Int) | ID do paciente associado. | **FK** (`pacientes.id`), Obrigatória. | - |
+| `id_agente` | `number` (Int) | ID do agente responsável pelo registro. | **FK** (`agentes.id`), Obrigatório. | - |
+| `observacao` | `string` | Texto descritivo sobre o estado clínico/evolução. | Obrigatório. | - |
+| `data_registro` | `string` | Data e hora exata da criação. | Auto-gerado. | ISO (`YYYY-MM-DDTHH:mm:ssZ`) |
+| `completo` | `boolean` | Indica se o relatório foi concluído ou está em rascunho. | Obrigatório. | `true` ou `false` |
 
-### 📄 **Relatório Clínico**
+### 2.4. 🧱 Modelo Entidade-Relacionamento (MER) - Sumário
 
-Armazena observações médicas registradas por agentes sobre pacientes.
+O modelo é baseado em relacionamentos 1:N que garantem a integridade referencial e rastreabilidade dos dados.
 
-| Campo           | Tipo    | Descrição                                                                          |
-| :-------------- | :------ | :--------------------------------------------------------------------------------- |
-| `id`            | number  | Identificador único do relatório.                                                  |
-| `id_paciente`   | number  | ID do paciente associado (FK de `pacientes`).                                      |
-| `id_agente`     | number  | ID do agente de saúde que criou o relatório (FK de `agentes`).                     |
-| `observacao`    | string  | Texto descritivo sobre o estado clínico do paciente.                               |
-| `data_registro` | string  | Data/hora de criação no formato ISO (`YYYY-MM-DDTHH:mm:ssZ`).                      |
-| `completo`      | boolean | Indica se o relatório foi concluído (`true`) ou ainda está em andamento (`false`). |
+![DER](src/img/DER.png)
 
----
+| Entidade | Chave Primária | Atributos Representativos |
+| :--- | :--- | :--- |
+| **Paciente** | `id` | `nome`, `idade`, `temperatura`, `pressao_arterial`, etc. |
+| **Agente** | `id` | `nome`, `cargo`, `registro_profissional`. |
+| **Relatório** | `id` | `observacao`, `data_registro`, `completo`. |
 
-## 🧱 **3. Modelo Entidade-Relacionamento (MER) - SmartVital**
+#### 🔗 Detalhes de Relacionamentos e Cardinalidades
 
-O modelo **SmartVital** foi projetado com **três entidades principais** e **relacionamentos 1:N** entre pacientes, agentes e relatórios.
+| Relação | Tipo | Chave Estrangeira | Integridade |
+| :--- | :--- | :--- | :--- |
+| **Paciente possui Relatórios** | **1:N** | `relatorios.id_paciente` | **Obrigatória:** Um relatório deve sempre pertencer a um paciente. |
+| **Agente registra Relatórios** | **1:N** | `relatorios.id_agente` | **Opcional:** Um relatório pode ser gerado automaticamente (sem agente) ou estar pendente de atribuição. |
+| **Integridade de Dados** | - | - | A exclusão de um **Paciente** implica a remoção em cascata de todos os seus **Relatórios** associados. |
 
-| Entidade      | Chave Primária       | Atributos Principais                                                                    |
-| :------------ | :------------------- | :-------------------------------------------------------------------------------------- |
-| **Paciente**  | `id_paciente` (INT)  | `nome`, `idade`, `peso`, `altura`, `temperatura`, `pressao_arterial`, `saturacao`, etc. |
-| **Agente**    | `id_agente` (INT)    | `nome`, `cargo`, `registro_profissional`, `data_admissao`.                              |
-| **Relatorio** | `id_relatorio` (INT) | `data_registro`, `completo`, `observacao`.                                              |
+-----
 
-### 🔗 **Relacionamentos e Cardinalidades**
+## 2.5 🧾 Resumo Técnico Consolidado
 
-1. **Paciente ⇄ Relatorio (1:N)**
+| Entidade | Propósito Principal | Status da Autenticação | Formato de Comunicação |
+| :--- | :--- | :--- | :--- |
+| **Paciente** | Monitoramento e Dados Vitais | Público e Agentes | JSON |
+| **Agente de Saúde** | Gestão de Profissionais | Apenas Agentes | JSON |
+| **Relatório Clínico** | Registro de Evolução | Apenas Agentes | JSON |
 
-   * Um **Paciente** possui **um ou vários Relatórios** (`1:N`).
-   * Cada **Relatório** pertence a **um único Paciente** (`N:1`).
+## 👥 3. Endpoints de Pacientes (`/pacientes`)
 
-2. **Agente ⇄ Relatorio (1:N, com participação opcional)**
+### 3.1. POST `/pacientes` (Criação)
 
-   * Um **Agente** pode emitir **um ou vários Relatórios** (`1:N`).
-   * Um **Relatório** pode ou não ter um agente associado (`0:N`), permitindo relatórios automáticos ou pendentes.
+Cria um novo paciente no sistema, inicializando os sinais vitais como `null`.
 
-### 🧩 **Implementação Relacional**
-
-* **Tabelas principais:** `pacientes`, `agentes`, `relatorios`.
-* **Chaves estrangeiras:**
-
-  * `relatorios.id_paciente` → `pacientes.id` (**obrigatória**)
-  * `relatorios.id_agente` → `agentes.id` (**opcional / NULL permitido**)
-* **Integridade referencial garantida** por restrições de chave estrangeira (FK).
-* **Remoção em cascata** pode ser aplicada ao deletar um paciente, se desejado.
-
----
-
-## 👥 **4. Endpoints de Pacientes**
-
----
-
-### **4.1. POST /pacientes**
-
-Cria um novo paciente no sistema.
-
-#### 📨 **Request**
-
-Solicita a criação de um novo paciente com os seguintes dados:
+**📨 Request Body:**
 
 ```json
 {
-  "id": 1,
   "nome": "Henrique Pereira",
   "idade": 30,
   "peso": 75.0,
-  "altura": 1.70,
-  "temperatura":
-  "indice_glicemico": 
-  "pressao_arterial": 
-  "saturacao": 
-  "pulso": 
-  "respiracao": 
+  "altura": 1.70
 }
 ```
 
-**Campos Preenchidos:**
-
-* `nome` (string): Nome completo do paciente.
-* `idade` (inteiro): Idade do paciente em anos.
-* `peso` (decimal): Peso do paciente em quilogramas.
-* `altura` (decimal): Altura do paciente em metros.
-
-#### 📤 **Response (201)**
-
-A resposta retorna os dados do paciente criado, incluindo o ID gerado automaticamente e os campos de sinais vitais (que estarão `null` até serem preenchidos).
+**📤 Response (201 Created):** Retorna o objeto completo com o `id` gerado e campos de sinais vitais vazios.
 
 ```json
 {
@@ -185,15 +155,11 @@ A resposta retorna os dados do paciente criado, incluindo o ID gerado automatica
 }
 ```
 
----
+### 3.2. GET `/pacientes` (Listagem)
 
-### **4.2. GET /pacientes**
+Obtém uma lista de todos os pacientes registrados.
 
-Obtém uma lista de todos os pacientes registrados no sistema.
-
-#### 📤 **Response (200)**
-
-A resposta retorna uma lista com os pacientes cadastrados, com informações como nome, idade, peso e sinais vitais.
+**📤 Response (200 OK):**
 
 ```json
 [
@@ -218,15 +184,13 @@ A resposta retorna uma lista com os pacientes cadastrados, com informações com
 ]
 ```
 
----
+### 3.3. GET `/pacientes/{id}` (Detalhe)
 
-### **4.3. GET /pacientes/{id}**
+Busca as informações detalhadas de um paciente específico, incluindo os sinais vitais mais recentes.
 
-Busca as informações detalhadas de um paciente específico, identificado pelo seu `id`.
+**Parâmetro de URL:** `{id}` - ID do paciente.
 
-#### 📤 **Response (200)**
-
-Retorna os dados completos do paciente, incluindo informações básicas e sinais vitais atualizados, se disponíveis.
+**📤 Response (200 OK):**
 
 ```json
 {
@@ -244,13 +208,13 @@ Retorna os dados completos do paciente, incluindo informações básicas e sinai
 }
 ```
 
----
+### 3.4. PUT `/pacientes/{id}` (Atualização Completa)
 
-### **4.4. PUT /pacientes/{id}**
+Atualiza **todos os campos** do paciente (pessoais e vitais). Requer o envio de todos os campos da entidade.
 
-Atualiza **todos os campos** de um paciente específico, incluindo dados pessoais e sinais vitais.
+**Parâmetro de URL:** `{id}` - ID do paciente.
 
-#### 📨 **Request**
+**📨 Request Body:**
 
 ```json
 {
@@ -267,14 +231,7 @@ Atualiza **todos os campos** de um paciente específico, incluindo dados pessoai
 }
 ```
 
-**Campos:**
-
-* `nome`, `idade`, `peso`, `altura`: Dados pessoais do paciente.
-* `temperatura`, `indice_glicemico`, `pressao_arterial`, `saturacao`, `pulso`, `respiracao`: Sinais vitais atualizados.
-
-#### 📤 **Response (200)**
-
-A resposta retorna os dados atualizados do paciente.
+**📤 Response (200 OK):** Retorna o objeto com os dados atualizados.
 
 ```json
 {
@@ -292,13 +249,13 @@ A resposta retorna os dados atualizados do paciente.
 }
 ```
 
----
-
-### **4.5. PATCH /pacientes/{id}/peso**
+### 3.5. PATCH `/pacientes/{id}/peso` (Atualização Parcial: Peso)
 
 Atualiza **somente o peso** do paciente.
 
-#### 📨 **Request**
+**Parâmetro de URL:** `{id}` - ID do paciente.
+
+**📨 Request Body:**
 
 ```json
 {
@@ -306,9 +263,7 @@ Atualiza **somente o peso** do paciente.
 }
 ```
 
-#### 📤 **Response (200)**
-
-Retorna o paciente com o peso atualizado.
+**📤 Response (200 OK):**
 
 ```json
 {
@@ -317,13 +272,13 @@ Retorna o paciente com o peso atualizado.
 }
 ```
 
----
-
-### **4.6. PATCH /pacientes/{id}/idade**
+### 3.6. PATCH `/pacientes/{id}/idade` (Atualização Parcial: Idade)
 
 Atualiza **somente a idade** do paciente.
 
-#### 📨 **Request**
+**Parâmetro de URL:** `{id}` - ID do paciente.
+
+**📨 Request Body:**
 
 ```json
 {
@@ -331,9 +286,7 @@ Atualiza **somente a idade** do paciente.
 }
 ```
 
-#### 📤 **Response (200)**
-
-Retorna o paciente com a idade atualizada.
+**📤 Response (200 OK):**
 
 ```json
 {
@@ -342,13 +295,13 @@ Retorna o paciente com a idade atualizada.
 }
 ```
 
----
-
-### **4.7. PATCH /pacientes/{id}/pressao**
+### 3.7. PATCH `/pacientes/{id}/pressao` (Atualização Parcial: Pressão)
 
 Atualiza **somente a pressão arterial** do paciente.
 
-#### 📨 **Request**
+**Parâmetro de URL:** `{id}` - ID do paciente.
+
+**📨 Request Body:**
 
 ```json
 {
@@ -356,9 +309,7 @@ Atualiza **somente a pressão arterial** do paciente.
 }
 ```
 
-#### 📤 **Response (200)**
-
-Retorna o paciente com a pressão arterial atualizada.
+**📤 Response (200 OK):**
 
 ```json
 {
@@ -367,13 +318,13 @@ Retorna o paciente com a pressão arterial atualizada.
 }
 ```
 
----
+### 3.8. GET `/pacientes/{id}/sinais-vitais` (Somente Sinais Vitais)
 
-### **4.8. GET /pacientes/{id}/sinais-vitais**
+Retorna exclusivamente os sinais vitais do paciente, sem dados de identificação pessoal.
 
-Retorna **somente os sinais vitais** do paciente, sem dados pessoais.
+**Parâmetro de URL:** `{id}` - ID do paciente.
 
-#### 📤 **Response (200)**
+**📤 Response (200 OK):**
 
 ```json
 {
@@ -387,31 +338,27 @@ Retorna **somente os sinais vitais** do paciente, sem dados pessoais.
 }
 ```
 
----
+### 3.9. DELETE `/pacientes/{id}` (Remoção)
 
-### **4.9. DELETE /pacientes/{id}**
+Remove permanentemente um paciente e todos os seus relatórios clínicos associados.
 
-Remove permanentemente um paciente do sistema.
+**Parâmetro de URL:** `{id}` - ID do paciente.
 
-#### 📤 **Response (204)**
-
-Sem conteúdo.
+**📤 Response (204 No Content):**
 
 ```
 Sem conteúdo
 ```
 
----
+-----
 
-## 👤 **5. Endpoints de Agentes de Saúde**
+## 4\. Endpoints de Agentes de Saúde (`/agentes`)
 
----
+### 4.1. POST `/agentes` (Criação)
 
-### **5.1. POST /agentes**
+Cria um novo registro para um profissional de saúde.
 
-Cria um novo agente de saúde no sistema.
-
-#### 📨 **Request**
+**📨 Request Body:**
 
 ```json
 {
@@ -423,17 +370,7 @@ Cria um novo agente de saúde no sistema.
 }
 ```
 
-**Campos:**
-
-* `nome`: Nome completo do agente.
-* `senha`: Senha para acesso ao sistema (utilize um mecanismo de segurança para criptografar a senha).
-* `cargo`: Cargo do agente (ex: Médico, Enfermeiro, etc.).
-* `registro_profissional`: Registro profissional (ex: CRM, COREN).
-* `data_admissao`: Data de admissão do agente.
-
-#### 📤 **Response (201)**
-
-Retorna o agente recém-criado.
+**📤 Response (201 Created):** O campo `senha` não deve ser retornado por questões de segurança.
 
 ```json
 {
@@ -445,13 +382,11 @@ Retorna o agente recém-criado.
 }
 ```
 
----
-
-### **5.2. GET /agentes**
+### 4.2. GET `/agentes` (Listagem)
 
 Lista todos os agentes de saúde registrados.
 
-#### 📤 **Response (200)**
+**📤 Response (200 OK):**
 
 ```json
 [
@@ -472,13 +407,13 @@ Lista todos os agentes de saúde registrados.
 ]
 ```
 
----
-
-### **5.3. GET /agentes/{id}**
+### 4.3. GET `/agentes/{id}` (Detalhe)
 
 Retorna as informações de um agente específico.
 
-#### 📤 **Response (200)**
+**Parâmetro de URL:** `{id}` - ID do agente.
+
+**📤 Response (200 OK):**
 
 ```json
 {
@@ -490,16 +425,13 @@ Retorna as informações de um agente específico.
 }
 ```
 
----
+### 4.4. PATCH `/agentes/{id}` (Atualização Parcial)
 
-### **5.4. PATCH /agentes/{id}**
+Atualiza informações parciais de um agente (ex: `cargo`).
 
-Atualiza **informações parciais
+**Parâmetro de URL:** `{id}` - ID do agente.
 
-
-** de um agente (como cargo ou dados pessoais).
-
-#### 📨 **Request**
+**📨 Request Body:**
 
 ```json
 {
@@ -507,7 +439,7 @@ Atualiza **informações parciais
 }
 ```
 
-#### 📤 **Response (200)**
+**📤 Response (200 OK):**
 
 ```json
 {
@@ -519,31 +451,27 @@ Atualiza **informações parciais
 }
 ```
 
----
+### 4.5. DELETE `/agentes/{id}` (Remoção)
 
-### **5.5. DELETE /agentes/{id}**
+Remove permanentemente um agente de saúde.
 
-Remove permanentemente um agente de saúde do sistema.
+**Parâmetro de URL:** `{id}` - ID do agente.
 
-#### 📤 **Response (204)**
-
-Sem conteúdo.
+**📤 Response (204 No Content):**
 
 ```
 Sem conteúdo
 ```
 
----
+-----
 
-## 📋 **6. Endpoints de Relatórios Clínicos**
+## 5\. Endpoints de Relatórios Clínicos (`/relatorios`)
 
----
+### 5.1. POST `/relatorios` (Criação)
 
-### **6.1. POST /relatorios**
+Cria um novo relatório clínico, associando IDs de paciente e agente.
 
-Cria um novo relatório clínico associando um paciente e um agente de saúde.
-
-#### 📨 **Request**
+**📨 Request Body:**
 
 ```json
 {
@@ -554,14 +482,7 @@ Cria um novo relatório clínico associando um paciente e um agente de saúde.
 }
 ```
 
-**Campos:**
-
-* `id_paciente`: ID do paciente associado ao relatório.
-* `id_agente`: ID do agente de saúde que está criando o relatório.
-* `observacao`: Descrição das observações clínicas sobre o paciente.
-* `completo`: Indica se o relatório foi concluído (`true`) ou se ainda está em andamento (`false`).
-
-#### 📤 **Response (201)**
+**📤 Response (201 Created):** O campo `data_registro` é gerado automaticamente pelo servidor.
 
 ```json
 {
@@ -574,13 +495,13 @@ Cria um novo relatório clínico associando um paciente e um agente de saúde.
 }
 ```
 
----
-
-### **6.2. GET /relatorios/{id}**
+### 5.2. GET `/relatorios/{id}` (Detalhe)
 
 Retorna os detalhes de um relatório clínico específico.
 
-#### 📤 **Response (200)**
+**Parâmetro de URL:** `{id}` - ID do relatório.
+
+**📤 Response (200 OK):**
 
 ```json
 {
@@ -593,13 +514,13 @@ Retorna os detalhes de um relatório clínico específico.
 }
 ```
 
----
-
-### **6.3. GET /pacientes/{id}/relatorios**
+### 5.3. GET `/pacientes/{id}/relatorios` (Relatórios por Paciente)
 
 Lista todos os relatórios clínicos associados a um paciente específico.
 
-#### 📤 **Response (200)**
+**Parâmetro de URL:** `{id}` - ID do paciente.
+
+**📤 Response (200 OK):**
 
 ```json
 [
@@ -622,13 +543,13 @@ Lista todos os relatórios clínicos associados a um paciente específico.
 ]
 ```
 
----
+### 5.4. PATCH `/relatorios/{id}` (Atualização Parcial)
 
-### **6.4. PATCH /relatorios/{id}**
+Atualiza a observação e/ou o status de conclusão (`completo`) do relatório.
 
-Atualiza observações ou o status de conclusão de um relatório clínico.
+**Parâmetro de URL:** `{id}` - ID do relatório.
 
-#### 📨 **Request**
+**📨 Request Body:**
 
 ```json
 {
@@ -637,7 +558,7 @@ Atualiza observações ou o status de conclusão de um relatório clínico.
 }
 ```
 
-#### 📤 **Response (200)**
+**📤 Response (200 OK):**
 
 ```json
 {
@@ -650,13 +571,11 @@ Atualiza observações ou o status de conclusão de um relatório clínico.
 }
 ```
 
----
+### 5.5. GET `/relatorios/pendentes` (Consulta por Status)
 
-### **6.5. GET /relatorios/pendentes**
+Lista todos os relatórios clínicos que estão com o status `completo: false` (em andamento ou pendentes de finalização).
 
-Lista todos os relatórios clínicos ainda não concluídos (`completo: false`).
-
-#### 📤 **Response (200)**
+**📤 Response (200 OK):**
 
 ```json
 [
@@ -671,14 +590,16 @@ Lista todos os relatórios clínicos ainda não concluídos (`completo: false`).
 ]
 ```
 
----
+-----
 
-## 🧾 **7. Resumo Técnico**
+## 6\. Resumo Técnico e Tabela de Endpoints
 
-| Entidade              | Endpoints | Acesso            |
-| :-------------------- | :-------- | :---------------- |
-| **Paciente**          | 9         | Público e agentes |
-| **Agente de Saúde**   | 5         | Agentes           |
-| **Relatório Clínico** | 5         | Agentes           |
+Resumo geral da arquitetura de endpoints por entidade.
 
----
+| Entidade | Prefixo do Endpoint | Total de Endpoints | Chave Primária (PK) | Relacionamentos (FK) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Paciente** | `/pacientes` | 9 | `id` | - |
+| **Agente de Saúde** | `/agentes` | 5 | `id` | - |
+| **Relatório Clínico** | `/relatorios` | 5 | `id` | `id_paciente`, `id_agente` |
+
+**Total de Endpoints Implementados:** 19
