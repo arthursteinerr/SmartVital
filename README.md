@@ -573,6 +573,3 @@ Lista relatórios ainda não concluídos.
 | **Relatório Clínico** | 5         | Agentes           |
 
 ---
-
-Deseja que eu gere esse README em **formato `.md` pronto para commit** (com sintaxe de Markdown e identação correta)?
-Posso gerar e te entregar o arquivo direto (`README.md`).
