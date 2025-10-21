@@ -29,7 +29,7 @@ Detalhes sobre a arquitetura de comunicação da API.
 | **Códigos de Sucesso** | 200, 201, 204 | Padrão REST para operações bem-sucedidas. |
 | **Códigos de Erro** | 400, 404, 500 | Padrão REST para indicar falhas (Cliente ou Servidor). |
 
-### 1.1. Códigos de Resposta HTTP (Detalhado)
+### 1.1. Códigos de Resposta HTTP
 
 | Código | Status | Descrição | Uso Principal |
 | :--- | :--- | :--- | :--- |
@@ -42,7 +42,7 @@ Detalhes sobre a arquitetura de comunicação da API.
 
 -----
 
-## 2\. 🧩 Modelagem de Dados (Schema Completo)
+## 2\. 🧩 Modelagem de Dados
 
 O modelo de dados é composto por três entidades principais inter-relacionadas, seguindo boas práticas de normalização e rastreabilidade.
 
@@ -90,7 +90,7 @@ Armazena as observações médicas registradas por agentes sobre o estado dos pa
 | `data_registro` | `string` | Data e hora exata da criação. | Auto-gerado. | ISO (`YYYY-MM-DDTHH:mm:ssZ`) |
 | `completo` | `boolean` | Indica se o relatório foi concluído ou está em rascunho. | Obrigatório. | `true` ou `false` |
 
-### 2.4. 🧱 Modelo Entidade-Relacionamento (MER) - Sumário
+### 2.4. 🧱 Modelo Entidade-Relacionamento (MER)
 
 O modelo é baseado em relacionamentos 1:N que garantem a integridade referencial e rastreabilidade dos dados.
 
