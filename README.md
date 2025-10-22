@@ -112,6 +112,9 @@ O modelo é baseado em relacionamentos 1:N que garantem a integridade referencia
 
 -----
 
+[Link para o Postman](https://arthursteinerr-4295979.postman.co/workspace/Arthur-Steiner's-Workspace~3abe7c33-dc8c-47a6-8e21-6f6a7a03e4fe/folder/47732566-e27cd709-1f8c-4e58-ba6b-5944be1b2514?action=share&source=copy-link&creator=47732566&ctx=documentation)
+
+
 ## 👥 3. Endpoints de Pacientes (`/pacientes`)
 
 ### 3.1. POST `/pacientes` (Criação)
