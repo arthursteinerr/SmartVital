@@ -1,6 +1,6 @@
 ![Logo do Projeto](src/img/ImagemProjeto(SmartVitals).png)
 
-# 🩺 SmartVital API
+# 🩺 SmartVital - API
 
 **Plataforma de Gestão e Monitoramento de Saúde**
 
