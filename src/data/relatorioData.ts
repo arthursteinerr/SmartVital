@@ -24,7 +24,7 @@ export class RelatorioData {
         return db<Relatorio>("relatorio").where({ id }).first();
     }
 
-    async getRelatorioByPaciente(id_paciente: number): Promise< Relatorio | undefined >{
+    async getRelatoriosByPaciente(id_paciente: number): Promise< Relatorio[] >{
 
         return db<Relatorio>("relatorio")
         .where({ id_paciente })
