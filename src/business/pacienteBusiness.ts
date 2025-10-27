@@ -1,5 +1,5 @@
 import { getAllPacientes } from "../data/pacienteData";
-import { getPacienteeById } from "../data/pacienteData";
+import { getPacienteById } from "../data/pacienteData";
 import { createPaciente } from "../data/pacienteData";
 import { updatePaciente } from "../data/pacienteData";
 import { patchPaciente } from "../data/pacienteData";
@@ -75,6 +75,7 @@ export const deletePacienteBusiness = async (id: number) => {
   }
   return { success: true, data: pacienteExistente };
 };
+
 
 
 
