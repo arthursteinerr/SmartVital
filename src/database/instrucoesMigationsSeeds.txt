@@ -1,0 +1,11 @@
+O Knex usa automaticamente essas pastas ao rodar:
+
+npx knex migrate:latest
+npx knex seed:run
+
+Migrations:
+    Neste caso estão sendo responsaveis por criar as tabelas pacientes, agentes e relatroios.
+    Mas, tambem podem ser utilizadas para versionar o banco de dados ajudando a solucionar problemas de versao.
+
+Seeds:
+    Já as seeds, são utilizadas para popular o banco de dados de forma a deixa lo funcional, para testes e outros fins.
