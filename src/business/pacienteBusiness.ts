@@ -44,8 +44,26 @@ export const createPacienteBusiness = async (data: Omit<Paciente, "id">) => {
   return { success: true, data: novoPaciente };
 };
 
+//PUT Paciente
+export const updatePacienteBusiness = async (id: number, data: Paciente) => {
+  const pacienteExistente = await getPacienteById(id);
+
+  if(!pacienteExistente) {
+    return { success: false, message: "Paciente não encontrado."};
+  }
+
+  const pacienteAtualizado = await updatePaciente(
+    id,
+    data.nome ?? pacienteExistente.nome,
+    data.idade ?? pacienteExistente.idade,
+    data.peso ?? pacienteExistente.peso,
+    data.altura ?? pacienteExistente.altura
+    );
+  return { success: true, data: pacienteAtualizado };
+};
+
 //PATCH Paciente
-export const patchPacienteBusinesse = async (
+export const patchPacienteBusiness = async (
   id: number,
   data: Partial<Paciente>
   ) => {
@@ -75,27 +93,3 @@ export const deletePacienteBusiness = async (id: number) => {
   }
   return { success: true, data: pacienteExistente };
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
