@@ -14,4 +14,4 @@ relatorioRouter.get("/buscar/paciente/:id", (req, res) => relatorioController.li
 relatorioRouter.post("/criar/relatorio", (req, res) => relatorioController.criar(req, res));
 
 // Metodo para atualizar
-relatorioRouter.patch("/:id", (req, res) => relatorioController.atualizar(req, res));
+relatorioRouter.patch("/atualizar/:id", (req, res) => relatorioController.atualizar(req, res));

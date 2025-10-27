@@ -1,54 +1,58 @@
 import { Relatorio } from "../types/relatorioTypes";
-import db from '../dbConnection';
+import { connection } from "../dbConnection";
 
 export class RelatorioData {
 
-    async createRelatorio(data: Relatorio): Promise< Relatorio > {
+    async createRelatorio(data: Relatorio): Promise<Relatorio> {
 
-        const [novo] = await db<Relatorio>("relatorio")
-        .insert({
-            id_paciente: data.id_paciente,
-            id_agente: data.id_agente,
-            observacao: data.observacao,
-            completo: data.completo ?? false,
-            data: db.fn.now(),
-        })
+        const [novo] = await connection<Relatorio>("relatorios")
+            .insert({
+                id_paciente: data.id_paciente,
+                id_agente: data.id_agente,
+                observacao: data.observacao,
+                completo: data.completo ?? false,
+                data_registro: connection.fn.now(),
+            })
 
-        .returning(["id", "id_paciente", "id_agente", "observacao", "data as data_registro","completo"]);
+            .returning(["id", "id_paciente", "id_agente", "observacao", "data_registro", "completo"]);
 
         return novo;
     }
 
-    async getRelatorioById(id: number): Promise< Relatorio | undefined >{
+    async getRelatorioById(id: number): Promise<Relatorio | undefined> {
 
-        return db<Relatorio>("relatorio").where({ id }).first();
+        return connection<Relatorio>("relatorios").where({ id }).first();
     }
 
-    async getRelatoriosByPaciente(id_paciente: number): Promise< Relatorio[] >{
+    async getRelatoriosByPaciente(id_paciente: number): Promise<Relatorio[]> {
 
-        return db<Relatorio>("relatorio")
-        .where({ id_paciente })
-        .orderBy("data", "desc");
+        return connection<Relatorio>("relatorios")
+            .where({ id_paciente })
+            .orderBy("data_registro", "desc");
     }
 
-    async updateRelatorio(id: number, data: Partial<Relatorio>): Promise < Relatorio | undefined > {
-        
-        const [updated] = await db<Relatorio>("relatorio")
-        .where({ id })
-        .update({
-            observacao: data.observacao,
-            completo: data.completo,
-            atualizado_em: db.fn.now(),
-        })
-        .returning("*");
-        
-        return updated;
+    async updateRelatorio(id: number, data: Partial<Relatorio>): Promise<Relatorio | undefined> {
+
+        const updateObj: Partial<Relatorio> = {};
+
+        if (data.observacao !== undefined) updateObj.observacao = data.observacao;
+        if (data.completo !== undefined) updateObj.completo = data.completo;
+
+        const [updated] = await connection<Relatorio>("relatorios")
+            .where({ id })
+            .update({
+                ...updateObj,
+                data_registro: connection.fn.now(),
+            })
+            .returning("*");
+
+            return updated;
     }
 
-    async getRelatoriosPendentes():Promise<Relatorio[]>{
+    async getRelatoriosPendentes(): Promise<Relatorio[]> {
 
-        return db<Relatorio>("relatorio")
-        .where({ completo: false})
-        .orderBy("data", "desc");
+        return connection<Relatorio>("relatorios")
+            .where({ completo: false })
+            .orderBy("data_registro", "desc");
     }
 }

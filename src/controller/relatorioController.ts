@@ -34,7 +34,7 @@ export class RelatorioController {
         try{
 
             const relatorios = await relatorioBusiness.listarPorPaciente(Number(req.params.id));
-            res.status(200).json(relatorioBusiness);
+            res.status(200).json(relatorios);
         } catch (error: any) {
 
             res.status(400).json({ erro: error.message });

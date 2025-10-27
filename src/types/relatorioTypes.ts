@@ -5,6 +5,6 @@ export interface Relatorio {
     id_agente: number;
     observacao?: string;
     completo?: boolean;
-    data_registro?: string;
+    data_registro?: Date;
     
 }
