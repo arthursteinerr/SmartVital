@@ -1,7 +1,7 @@
 O Knex usa automaticamente essas pastas ao rodar:
 
-npx knex migrate:latest
-npx knex seed:run
+npx ts-node -O '{"module":"CommonJS"}' ./node_modules/knex/bin/cli.js migrate:latest --knexfile knexfile.js
+npx ts-node -O '{"module":"CommonJS"}' ./node_modules/knex/bin/cli.js seed:run --knexfile knexfile.js
 
 Migrations:
     Neste caso estão sendo responsaveis por criar as tabelas pacientes, agentes e relatroios.

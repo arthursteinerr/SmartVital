@@ -1,7 +1,11 @@
 import { app } from "./app";
+import dotenv from "dotenv";
 
-const PORT = 3000;
+dotenv.config();
 
+const PORT = process.env.PORT || 3000;
+
+// Inicializa o servidor Express
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`SmartVital API rodando em http://localhost:${PORT}`);
 });
