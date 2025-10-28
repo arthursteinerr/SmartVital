@@ -36,16 +36,16 @@ export const createPacienteBusiness = async (data: Omit<Paciente, "id">) => {
 
   const novoPaciente = await createPaciente(
     data.nome,
-    data.idade ?? null,
-    data.peso ?? null,
-    data.altura ?? null
+    data.idade,
+    data.peso,
+    data.altura
     );
 
   return { success: true, data: novoPaciente };
 };
 
 //PUT Paciente
-export const updatePacienteBusiness = async (id: number, data: Paciente) => {
+export const updatePacienteBusiness = async (id: number, data: Partial<Paciente>) => {
   const pacienteExistente = await getPacienteById(id);
 
   if(!pacienteExistente) {
@@ -53,12 +53,12 @@ export const updatePacienteBusiness = async (id: number, data: Paciente) => {
   }
 
   const pacienteAtualizado = await updatePaciente(
-    id,
-    data.nome ?? pacienteExistente.nome,
-    data.idade ?? pacienteExistente.idade,
-    data.peso ?? pacienteExistente.peso,
-    data.altura ?? pacienteExistente.altura
-    );
+    id, {
+    nome: data.nome ?? pacienteExistente.nome,
+    idade: data.idade ?? pacienteExistente.idade,
+    peso: data.peso ?? pacienteExistente.peso,
+    altura: data.altura ?? pacienteExistente.altura
+    });
   return { success: true, data: pacienteAtualizado };
 };
 
@@ -93,3 +93,4 @@ export const deletePacienteBusiness = async (id: number) => {
   }
   return { success: true, data: pacienteExistente };
 };
+
