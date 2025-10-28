@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import { agenteRouter } from "./routes/agenteRoutes";
-// import { pacienteRouter } from "./routes/pacienteRoutes";
+import { pacienteRouter } from "./routes/pacienteRoutes";
 import { relatorioRouter } from "./routes/relatorioRoutes";
 
 dotenv.config();
@@ -16,7 +16,7 @@ app.use(express.json());
 
 // Rotas principais
 app.use("/agentes", agenteRouter);
-// app.use("/pacientes", pacienteRouter);
+app.use("/pacientes", pacienteRouter);
 app.use("/relatorios", relatorioRouter);
 
 // Verificar se a API esta em funcinamento
