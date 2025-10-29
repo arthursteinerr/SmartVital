@@ -6,7 +6,7 @@ import { updatePacienteController } from "../controller/pacienteController";
 import { patchPacienteController } from "../controller/pacienteController";
 import { deletePacienteController } from "../controller/pacienteController";
 
-const pacienteRouter = express.Router();
+export const pacienteRouter = express.Router();
 
 pacienteRouter.get("/", getAllPacientesController);
 pacienteRouter.get("/:id", getPacienteByIdController);
