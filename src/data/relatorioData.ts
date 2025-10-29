@@ -38,13 +38,15 @@ export class RelatorioData {
         if (data.observacao !== undefined) updateObj.observacao = data.observacao;
         if (data.completo !== undefined) updateObj.completo = data.completo;
 
-        const [updated] = await connection<Relatorio>("relatorios")
+        await connection<Relatorio>("relatorios")
             .where({ id })
             .update({
                 ...updateObj,
                 data_registro: connection.fn.now(),
             })
-            .returning("*");
+
+            // Altercao devido ao MySql não suportar o .returning(), por isso, fazemos uma nova consulta
+            const updated = await connection<Relatorio>("relatorios").where({ id }).first();
 
             return updated;
     }

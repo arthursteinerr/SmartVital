@@ -6,13 +6,11 @@ import { updatePacienteController } from "../controller/pacienteController";
 import { patchPacienteController } from "../controller/pacienteController";
 import { deletePacienteController } from "../controller/pacienteController";
 
-const router = express.Router();
+const pacienteRouter = express.Router();
 
-router.get("/", getAllPacientesController);
-router.get("/:id", getPacienteByIdController);
-router.post("/", createPacienteController);
-router.put("/:id", updatePacienteController);
-router.patch("/:id", patchPacienteController);
-router.delete("/:id", deletePacienteController);
-
-export default router;
+pacienteRouter.get("/", getAllPacientesController);
+pacienteRouter.get("/:id", getPacienteByIdController);
+pacienteRouter.post("/", createPacienteController);
+pacienteRouter.put("/:id", updatePacienteController);
+pacienteRouter.patch("/:id", patchPacienteController);
+pacienteRouter.delete("/:id", deletePacienteController);
