@@ -2,7 +2,7 @@
 <MER>
 	<Informacoes>
 		<Posicao Left="274" Top="0"/>
-		<TotalItens Valor="34"/>
+		<TotalItens Valor="39"/>
 		<Tipo Valor="LÓGICO"/>
 		<Versao Valor="2.0.0"/>
 		<Autor Valor=""/>
@@ -28,8 +28,8 @@
 	</Informacoes>
 	<Tabelas>
     <Tabela nome="Paciente" id="1">
-      <Left Valor="419"/>
-      <Top Valor="136"/>
+      <Left Valor="404"/>
+      <Top Valor="171"/>
       <Width Valor="185"/>
       <Height Valor="208"/>
       <Fonte default="-1"/>
@@ -43,8 +43,8 @@
       <cOrdem Valor="0"/>
       <Campos>
         <Campo nome="id_paciente" id="8">
-          <Left Valor="419"/>
-          <Top Valor="155"/>
+          <Left Valor="404"/>
+          <Top Valor="190"/>
           <Width Valor="183"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -64,8 +64,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="idade" id="4">
-          <Left Valor="419"/>
-          <Top Valor="173"/>
+          <Left Valor="404"/>
+          <Top Valor="208"/>
           <Width Valor="183"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -85,8 +85,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="peso" id="5">
-          <Left Valor="419"/>
-          <Top Valor="191"/>
+          <Left Valor="404"/>
+          <Top Valor="226"/>
           <Width Valor="183"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -106,8 +106,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="altura" id="6">
-          <Left Valor="419"/>
-          <Top Valor="209"/>
+          <Left Valor="404"/>
+          <Top Valor="244"/>
           <Width Valor="183"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -127,8 +127,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="temperatura" id="7">
-          <Left Valor="419"/>
-          <Top Valor="227"/>
+          <Left Valor="404"/>
+          <Top Valor="262"/>
           <Width Valor="183"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -148,8 +148,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="indice_glicemico" id="9">
-          <Left Valor="419"/>
-          <Top Valor="245"/>
+          <Left Valor="404"/>
+          <Top Valor="280"/>
           <Width Valor="183"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -169,8 +169,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="pressao_arterial" id="10">
-          <Left Valor="419"/>
-          <Top Valor="263"/>
+          <Left Valor="404"/>
+          <Top Valor="298"/>
           <Width Valor="183"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -190,8 +190,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="saturacao" id="11">
-          <Left Valor="419"/>
-          <Top Valor="281"/>
+          <Left Valor="404"/>
+          <Top Valor="316"/>
           <Width Valor="183"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -211,8 +211,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="pulso" id="12">
-          <Left Valor="419"/>
-          <Top Valor="299"/>
+          <Left Valor="404"/>
+          <Top Valor="334"/>
           <Width Valor="183"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -232,8 +232,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="respiracao" id="13">
-          <Left Valor="419"/>
-          <Top Valor="317"/>
+          <Left Valor="404"/>
+          <Top Valor="352"/>
           <Width Valor="183"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -255,10 +255,10 @@
       </Campos>
     </Tabela>
     <Tabela nome="Relatorio" id="2">
-      <Left Valor="739"/>
-      <Top Valor="172"/>
-      <Width Valor="159"/>
-      <Height Valor="137"/>
+      <Left Valor="738"/>
+      <Top Valor="162"/>
+      <Width Valor="226"/>
+      <Height Valor="226"/>
       <Fonte default="-1"/>
       <Dicionario></Dicionario>
       <Nula Valor="0"/>
@@ -270,9 +270,9 @@
       <cOrdem Valor="0"/>
       <Campos>
         <Campo nome="id_relatorio" id="20">
-          <Left Valor="739"/>
-          <Top Valor="191"/>
-          <Width Valor="157"/>
+          <Left Valor="738"/>
+          <Top Valor="181"/>
+          <Width Valor="224"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
           <Dicionario></Dicionario>
@@ -291,9 +291,9 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="id_paciente" id="21">
-          <Left Valor="739"/>
-          <Top Valor="209"/>
-          <Width Valor="157"/>
+          <Left Valor="738"/>
+          <Top Valor="199"/>
+          <Width Valor="224"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
           <Dicionario></Dicionario>
@@ -312,9 +312,9 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="id_agente" id="22">
-          <Left Valor="739"/>
-          <Top Valor="227"/>
-          <Width Valor="157"/>
+          <Left Valor="738"/>
+          <Top Valor="217"/>
+          <Width Valor="224"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
           <Dicionario></Dicionario>
@@ -333,9 +333,9 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="completo" id="23">
-          <Left Valor="739"/>
-          <Top Valor="245"/>
-          <Width Valor="157"/>
+          <Left Valor="738"/>
+          <Top Valor="235"/>
+          <Width Valor="224"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
           <Dicionario></Dicionario>
@@ -354,9 +354,9 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="observacao" id="24">
-          <Left Valor="739"/>
-          <Top Valor="263"/>
-          <Width Valor="157"/>
+          <Left Valor="738"/>
+          <Top Valor="253"/>
+          <Width Valor="224"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
           <Dicionario></Dicionario>
@@ -375,9 +375,114 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="data" id="25">
-          <Left Valor="739"/>
-          <Top Valor="281"/>
-          <Width Valor="157"/>
+          <Left Valor="738"/>
+          <Top Valor="271"/>
+          <Width Valor="224"/>
+          <Height Valor="19"/>
+          <Fonte default="-1"/>
+          <Dicionario></Dicionario>
+          <Nula Valor="-1"/>
+          <Observacao></Observacao>
+          <Futuro></Futuro>
+          <Anexos/>
+          <ApenasSeparador Valor="0"/>
+          <IsKey Valor="0"/>
+          <IsFKey Valor="0"/>
+          <Tipo Valor="DATA"/>
+          <TabOrigem Valor="0"/>
+          <CampoOrigem Valor="0"/>
+          <Complemento Valor=""/>
+          <OnUpdate Valor="0"/>
+          <OnDelete Valor="0"/>
+        </Campo>
+        <Campo nome="deletado" id="39">
+          <Left Valor="738"/>
+          <Top Valor="289"/>
+          <Width Valor="224"/>
+          <Height Valor="19"/>
+          <Fonte default="-1"/>
+          <Dicionario></Dicionario>
+          <Nula Valor="-1"/>
+          <Observacao></Observacao>
+          <Futuro></Futuro>
+          <Anexos/>
+          <ApenasSeparador Valor="0"/>
+          <IsKey Valor="0"/>
+          <IsFKey Valor="0"/>
+          <Tipo Valor="BOOLEAN"/>
+          <TabOrigem Valor="0"/>
+          <CampoOrigem Valor="0"/>
+          <Complemento Valor=""/>
+          <OnUpdate Valor="0"/>
+          <OnDelete Valor="0"/>
+        </Campo>
+        <Campo nome="solicitado_por" id="44">
+          <Left Valor="738"/>
+          <Top Valor="307"/>
+          <Width Valor="224"/>
+          <Height Valor="19"/>
+          <Fonte default="-1"/>
+          <Dicionario></Dicionario>
+          <Nula Valor="-1"/>
+          <Observacao></Observacao>
+          <Futuro></Futuro>
+          <Anexos/>
+          <ApenasSeparador Valor="0"/>
+          <IsKey Valor="0"/>
+          <IsFKey Valor="-1"/>
+          <Tipo Valor="INT"/>
+          <TabOrigem Valor="3"/>
+          <CampoOrigem Valor="14"/>
+          <Complemento Valor=""/>
+          <OnUpdate Valor="0"/>
+          <OnDelete Valor="0"/>
+        </Campo>
+        <Campo nome="confirmado_por_medico" id="43">
+          <Left Valor="738"/>
+          <Top Valor="325"/>
+          <Width Valor="224"/>
+          <Height Valor="19"/>
+          <Fonte default="-1"/>
+          <Dicionario></Dicionario>
+          <Nula Valor="-1"/>
+          <Observacao></Observacao>
+          <Futuro></Futuro>
+          <Anexos/>
+          <ApenasSeparador Valor="0"/>
+          <IsKey Valor="0"/>
+          <IsFKey Valor="-1"/>
+          <Tipo Valor="INT"/>
+          <TabOrigem Valor="3"/>
+          <CampoOrigem Valor="14"/>
+          <Complemento Valor=""/>
+          <OnUpdate Valor="0"/>
+          <OnDelete Valor="0"/>
+        </Campo>
+        <Campo nome="motivo_exclusao" id="40">
+          <Left Valor="738"/>
+          <Top Valor="343"/>
+          <Width Valor="224"/>
+          <Height Valor="19"/>
+          <Fonte default="-1"/>
+          <Dicionario></Dicionario>
+          <Nula Valor="-1"/>
+          <Observacao></Observacao>
+          <Futuro></Futuro>
+          <Anexos/>
+          <ApenasSeparador Valor="0"/>
+          <IsKey Valor="0"/>
+          <IsFKey Valor="0"/>
+          <Tipo Valor="VARCHAR"/>
+          <TabOrigem Valor="0"/>
+          <CampoOrigem Valor="0"/>
+          <Complemento Valor=""/>
+          <OnUpdate Valor="0"/>
+          <OnDelete Valor="0"/>
+        </Campo>
+        <Campo nome="data_exclusao" id="42">
+          <Left Valor="738"/>
+          <Top Valor="361"/>
+          <Width Valor="224"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
           <Dicionario></Dicionario>
@@ -398,8 +503,8 @@
       </Campos>
     </Tabela>
     <Tabela nome="Agente" id="3">
-      <Left Valor="1048"/>
-      <Top Valor="172"/>
+      <Left Valor="1112"/>
+      <Top Valor="207"/>
       <Width Valor="155"/>
       <Height Valor="136"/>
       <Fonte default="-1"/>
@@ -413,8 +518,8 @@
       <cOrdem Valor="0"/>
       <Campos>
         <Campo nome="id_agente" id="14">
-          <Left Valor="1048"/>
-          <Top Valor="191"/>
+          <Left Valor="1112"/>
+          <Top Valor="226"/>
           <Width Valor="153"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -434,8 +539,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="nome" id="15">
-          <Left Valor="1048"/>
-          <Top Valor="209"/>
+          <Left Valor="1112"/>
+          <Top Valor="244"/>
           <Width Valor="153"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -455,8 +560,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="senha" id="16">
-          <Left Valor="1048"/>
-          <Top Valor="227"/>
+          <Left Valor="1112"/>
+          <Top Valor="262"/>
           <Width Valor="153"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -476,8 +581,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="cargo" id="17">
-          <Left Valor="1048"/>
-          <Top Valor="245"/>
+          <Left Valor="1112"/>
+          <Top Valor="280"/>
           <Width Valor="153"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -497,8 +602,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="crm_corem" id="18">
-          <Left Valor="1048"/>
-          <Top Valor="263"/>
+          <Left Valor="1112"/>
+          <Top Valor="298"/>
           <Width Valor="153"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -518,8 +623,8 @@
           <OnDelete Valor="0"/>
         </Campo>
         <Campo nome="dataAdmissao" id="19">
-          <Left Valor="1048"/>
-          <Top Valor="281"/>
+          <Left Valor="1112"/>
+          <Top Valor="316"/>
           <Width Valor="153"/>
           <Height Valor="19"/>
           <Fonte default="-1"/>
@@ -544,7 +649,7 @@
 	<LigacaoEntreTabelas>
     <LigaTabela nome="Relatorio_Paciente_1" id="26">
       <Left Valor="655"/>
-      <Top Valor="233"/>
+      <Top Valor="268"/>
       <Width Valor="15"/>
       <Height Valor="15"/>
       <Fonte default="-1"/>
@@ -559,8 +664,8 @@
           <MostraCardinalidade Valor="-1" Card_id="27"/>
           <Cardinalidades Cardinalidade="3">
             <Cardinalidade nome="" id="27">
-              <Left Valor="701"/>
-              <Top Valor="225"/>
+              <Left Valor="700"/>
+              <Top Valor="260"/>
               <Width Valor="40"/>
               <Height Valor="20"/>
               <Fonte default="-1"/>
@@ -585,8 +690,8 @@
           <MostraCardinalidade Valor="-1" Card_id="28"/>
           <Cardinalidades Cardinalidade="1">
             <Cardinalidade nome="" id="28">
-              <Left Valor="604"/>
-              <Top Valor="225"/>
+              <Left Valor="589"/>
+              <Top Valor="260"/>
               <Width Valor="40"/>
               <Height Valor="20"/>
               <Fonte default="-1"/>
@@ -610,8 +715,8 @@
       </Ligacoes>
     </LigaTabela>
     <LigaTabela nome="Agente_Relatorio_1" id="29">
-      <Left Valor="982"/>
-      <Top Valor="233"/>
+      <Left Valor="1025"/>
+      <Top Valor="268"/>
       <Width Valor="15"/>
       <Height Valor="15"/>
       <Fonte default="-1"/>
@@ -626,8 +731,8 @@
           <MostraCardinalidade Valor="-1" Card_id="30"/>
           <Cardinalidades Cardinalidade="1">
             <Cardinalidade nome="" id="30">
-              <Left Valor="1010"/>
-              <Top Valor="225"/>
+              <Left Valor="1074"/>
+              <Top Valor="260"/>
               <Width Valor="40"/>
               <Height Valor="20"/>
               <Fonte default="-1"/>
@@ -652,8 +757,8 @@
           <MostraCardinalidade Valor="-1" Card_id="31"/>
           <Cardinalidades Cardinalidade="4">
             <Cardinalidade nome="" id="31">
-              <Left Valor="898"/>
-              <Top Valor="225"/>
+              <Left Valor="964"/>
+              <Top Valor="260"/>
               <Width Valor="40"/>
               <Height Valor="20"/>
               <Fonte default="-1"/>
