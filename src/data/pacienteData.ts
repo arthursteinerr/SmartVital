@@ -1,7 +1,7 @@
 import { connection } from "../dbConnection";
 import { Paciente } from "../types/pacienteTypes";
 
-//Método GET ALL Pacientes
+//GET ALL Pacientes
 export const getAllPacientes = async (): Promise<Paciente[]> => {
   try{
     return await connection<Paciente>("pacientes")
@@ -38,15 +38,15 @@ export const createPaciente = async (
     const [novoPaciente] = await connection<Paciente>("pacientes")
     .insert({
       nome,
-      idade: idade ?? null,
-      peso: peso ?? null,
-      altura: altura ?? null,
-      temperatura: null,
-      indice_glicemico: null,
-      pressao_arterial: null,
-      saturacao: null,
-      pulso: null,
-      respiracao: null,
+      idade: idade ?? undefined,
+      peso: peso ?? undefined,
+      altura: altura ?? undefined,
+      temperatura: undefined,
+      indice_glicemico: undefined,
+      pressao_arterial: undefined,
+      saturacao: undefined,
+      pulso: undefined,
+      respiracao: undefined,
     })
     .returning(["id", "nome", "idade", "peso", "altura", "temperatura", "indice_glicemico", "pressao_arterial", "saturacao", "pulso", "respiracao"]);
     return novoPaciente;
