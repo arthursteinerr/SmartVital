@@ -64,4 +64,26 @@ export class RelatorioController {
             res.status(500).json({ erro: error.message })
         }
     }
+
+    async listarPorData(req: Request, res: Response){
+
+        try{
+
+
+        }catch{
+
+
+        }
+    }
+
+    async deletar(req: Request, res: Response){
+
+        try{
+
+
+        }catch{
+
+            
+        }
+    }
 }
