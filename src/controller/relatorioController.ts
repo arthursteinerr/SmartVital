@@ -64,4 +64,44 @@ export class RelatorioController {
             res.status(500).json({ erro: error.message })
         }
     }
+
+    async listarPorData(req: Request, res: Response){
+
+        try{
+
+            const { data } = req.query;
+            if(!data || typeof data !== "string"){
+                return res.status(400).json({erro: "Parametro 'data' é obrigatorio no formato DD/MM/YYYY."});
+            }
+
+            const relatorios = await relatorioBusiness.listarPorData(data);
+            res.status(200).json(relatorios);
+        }catch (error: any) {
+
+            res.status(400).json({ erro: error.message });
+        }
+    }
+
+    async deletar(req: Request, res: Response){
+
+        try{
+
+            const id = Number(req.params.id);
+            const { solicitado_por, confirmado_por_medico, motivo_exclusao } = req.body;
+
+            if(!solicitado_por || !confirmado_por_medico || motivo_exclusao) {
+
+                return res.status(400).json({
+                    erro: "Campos obrigatorios: solicitado_por, confirmado_por_medico e motivo_exclusao."
+                });
+            }
+
+            await relatorioBusiness.excluirRelatorio(id, solicitado_por, confirmado_por_medico, motivo_exclusao);
+
+            res.status(200).json({ mensagem: "SOFT delete registrado com sucesso."})
+        }catch (error: any) {
+
+            res.status(400).json({ erro: error.message });
+        }
+    }
 }
