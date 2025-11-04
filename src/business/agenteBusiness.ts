@@ -5,16 +5,20 @@ import { createAgente } from "../data/agenteData";
 import { updateAgente } from "../data/agenteData";
 import { deleteAgente } from "../data/agenteData";
 import { Agente } from "../types/agenteTypes";
+import { PaginatedResponse } from "../dto/paginationDTO";
+import { AgenteFilterDTO } from "../dto/agenteFilterDTO";
+import { FilterUtils } from '../utils/filterUtils';
 
 //GET All Agentes
-export const getAllAgentesBusiness = async () => {
-  const agentes = await getAllAgentes();
-  
-  if (agentes.length === 0) {
-    return { success: false, message: "Nenhum agente encontrado." };
+export const getAllAgentesBusiness = async (
+  filter: AgenteFilterDTO
+): Promise<PaginatedResponse<Omit<Agente, "senha">>> => {
+  try {
+    const completeFilter = FilterUtils.applyDefaults(filter);
+    return await getAllAgentes(completeFilter);
+  } catch (error: any) {
+    throw new Error(error.message);
   }
-
-  return { success: true, data: agentes };
 };
 
 //GET Agente By ID
@@ -45,7 +49,7 @@ export const createAgenteBusiness = async (data: Omit<Agente, "id">) => {
     data.senha,
     data.cargo,
     data.registro_profissional,
-    data.data_admissao
+    data.data_admissao.toISOString()
   );
   
   return { success: true, data: newAgente };
@@ -59,7 +63,11 @@ export const updateAgenteBusiness = async (id: number, data: Partial<Omit<Agente
     return { success: false, message: "Agente não encontrado." };
   }
 
-  const updated = await updateAgente(id, data.nome || agenteExists.nome, data.senha || agenteExists.senha, data.cargo || agenteExists.cargo);
+  const nome = data.nome ?? agenteExists.nome!;
+  const senha = data.senha ?? agenteExists.senha!;
+  const cargo = data.cargo ?? agenteExists.cargo!;
+
+  const updated = await updateAgente(id, nome, senha, cargo);
 
   return { success: true, data: updated };
 };
