@@ -31,7 +31,7 @@ export class RelatorioBusiness {
 
         const relatorio = await relatorioData.updateRelatorio(id, data);
 
-        if(!relatorio) throw new Error("Relatorio não encontrado.");
+        if (!relatorio) throw new Error("Relatorio não encontrado.");
         return relatorio;
     }
 
@@ -41,13 +41,17 @@ export class RelatorioBusiness {
     }
 
     async listarPorData(data: string): Promise<Relatorio[]> {
-        
-        if(!/^\d{2}\/\d{2}\/\d{4}$/.test(data)){
-            throw new Error("Formatação da 'data' inválido. Use o formato DD/MM/YYYY.")
+
+        if (!data) {
+            throw new Error("Parâmetro 'data' é obrigatório no formato DD-MM-YYYY.");
         }
-        
-        // Convertendo a data do padrao brasileiro DD/MM/YYYY para o usado no banco de dados YYYY/MM/DD
-        const [dia, mes, ano] = data.split("/");
+        const match = data.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+        if (!match) {
+            throw new Error("Formato de data inválido. Use DD-MM-YYYY.");
+        }
+
+        // Convertendo a data do padrao brasileiro DD-MM-YYYY para o usado no banco de dados YYYY-MM-DD
+        const [dia, mes, ano] = data.split("-");
         const dataFormatada = `${ano}-${mes}-${dia}`;
 
         const relatorios = await relatorioData.getRelatoriosByData(dataFormatada);
@@ -61,15 +65,15 @@ export class RelatorioBusiness {
         motivo_exclusao: string
     ): Promise<void> {
 
-        if(!solicitado_por || confirmado_por_medico) {
+        if (!solicitado_por || confirmado_por_medico) {
             throw new Error("Campos 'solicitado_por' e 'confirmado_por_medico' são obrigatorios.")
         }
-        if(!motivo_exclusao || motivo_exclusao.trim(). length < 30) {
+        if (!motivo_exclusao || motivo_exclusao.trim().length < 30) {
             throw new Error("O campo motivo_exclusao é obrigatorio e deve conter no minimo 30 caracteres.")
         }
 
         const relatorioExistente = await relatorioData.getRelatorioById(id);
-        if(!relatorioExistente) {
+        if (!relatorioExistente) {
             throw new Error("Relatorio não encontrado.");
         }
 

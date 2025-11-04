@@ -9,7 +9,7 @@ const relatorioController = new RelatorioController();
 relatorioRouter.get("/pendentes", (req, res) => relatorioController.listarPendentes(req, res));
 relatorioRouter.get("/:id", (req, res) => relatorioController.buscarPorId(req, res));
 relatorioRouter.get("/paciente/:id", (req, res) => relatorioController.listarPorPaciente(req, res));
-relatorioRouter.get("/por-data", (req, res) => relatorioController.listarPorData);
+relatorioRouter.get("/por-data/:data", (req, res) => relatorioController.listarPorData(req, res));
 
 // Metodo para criar
 relatorioRouter.post("/", (req, res) => relatorioController.criar(req, res));
