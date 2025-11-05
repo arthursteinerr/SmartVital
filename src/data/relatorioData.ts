@@ -5,7 +5,7 @@ export class RelatorioData {
 
     async createRelatorio(data: Relatorio): Promise<Relatorio> {
 
-        const [novo] = await connection<Relatorio>("relatorios")
+        const [id] = await connection<Relatorio>("relatorios")
             .insert({
                 id_paciente: data.id_paciente,
                 id_agente: data.id_agente,
@@ -14,7 +14,12 @@ export class RelatorioData {
                 data_registro: connection.fn.now(),
             })
 
-            .returning(["id", "id_paciente", "id_agente", "observacao", "data_registro", "completo"]);
+        // Como o MySQL não suporta .returning(), fazemos uma nova consulta
+        const novo = await connection<Relatorio>("relatorios").where({ id }).first();
+
+        if (!novo) {
+            throw new Error("Erro ao criar o relatório — não foi possível recuperar o registro criado.");
+        }
 
         return novo;
     }
@@ -67,7 +72,7 @@ export class RelatorioData {
     async getRelatoriosByData(data: string): Promise<Relatorio[]> {
 
         return connection<Relatorio>("relatorios")
-            .whereRaw("DATE(data_registro = ?", [data])
+            .whereRaw("DATE(data_registro) = ?", [data])
             .andWhere({ deletado: false })
             .orderBy("data_registro", "desc")
     }

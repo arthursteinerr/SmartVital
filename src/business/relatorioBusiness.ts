@@ -65,7 +65,7 @@ export class RelatorioBusiness {
         motivo_exclusao: string
     ): Promise<void> {
 
-        if (!solicitado_por || confirmado_por_medico) {
+        if (solicitado_por === undefined || confirmado_por_medico === undefined) {
             throw new Error("Campos 'solicitado_por' e 'confirmado_por_medico' são obrigatorios.")
         }
         if (!motivo_exclusao || motivo_exclusao.trim().length < 30) {
