@@ -1,21 +1,22 @@
 import { Router } from "express";
 import { RelatorioController } from "../controller/relatorioController";
+import { AutorizacaoMiddleware } from "../middlewares/AutorizacaoMiddleware";
 
 export const relatorioRouter = Router();
 
 const relatorioController = new RelatorioController();
 
 // Metodos para busca
-relatorioRouter.get("/pendentes", (req, res) => relatorioController.listarPendentes(req, res));
-relatorioRouter.get("/:id", (req, res) => relatorioController.buscarPorId(req, res));
-relatorioRouter.get("/paciente/:id", (req, res) => relatorioController.listarPorPaciente(req, res));
-relatorioRouter.get("/por-data/:data", (req, res) => relatorioController.listarPorData(req, res));
+relatorioRouter.get("/pendentes", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.listarPendentes(req, res));
+relatorioRouter.get("/:id", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.buscarPorId(req, res));
+relatorioRouter.get("/paciente/:id", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.listarPorPaciente(req, res));
+relatorioRouter.get("/por-data/:data", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.listarPorData(req, res));
 
 // Metodo para criar
-relatorioRouter.post("/", (req, res) => relatorioController.criar(req, res));
+relatorioRouter.post("/", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.criar(req, res));
 
 // Metodo para atualizar
-relatorioRouter.patch("/:id", (req, res) => relatorioController.atualizar(req, res));
+relatorioRouter.patch("/:id", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.atualizar(req, res));
 
 // Metodo para deletar
-relatorioRouter.delete("/deletar/:id", (req, res) => relatorioController.deletar(req, res));
+relatorioRouter.delete("/deletar/:id", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.deletar(req, res));

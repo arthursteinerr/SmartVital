@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { RelatorioBusiness } from "../business/relatorioBusiness";
+import { AutorizacaoMiddleware } from "../middlewares/AutorizacaoMiddleware";
 
 const relatorioBusiness = new RelatorioBusiness();
 
@@ -94,6 +95,15 @@ export class RelatorioController {
                 return res.status(400).json({
                     erro: "Campos obrigatorios: solicitado_por, confirmado_por_medico e motivo_exclusao."
                 });
+            }
+
+            if (confirmado_por_medico) {
+                const fakeNext = () => { };
+                const resultado = AutorizacaoMiddleware.autorizacaoMedico(req, res, fakeNext);
+
+                if (resultado) {
+                    return resultado;
+                }
             }
 
             await relatorioBusiness.excluirRelatorio(id, solicitado_por, confirmado_por_medico, motivo_exclusao);
