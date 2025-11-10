@@ -6,6 +6,19 @@ export const relatorioRouter = Router();
 
 const relatorioController = new RelatorioController();
 
+// Middleware temporário para simular autenticação
+relatorioRouter.use((req, res, next) => {
+  // Simula um médico autenticado
+  req.user = {
+    id: 1,
+    nome: "Dra. Camila Nunes",
+    cargo: "Médico",
+    registro_profissional: "CRM-SP-456789",
+    data_admissao: "2022-10-05"
+  };
+  next();
+});
+
 // Metodos para busca
 relatorioRouter.get("/pendentes", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.listarPendentes(req, res));
 relatorioRouter.get("/:id", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.buscarPorId(req, res));
