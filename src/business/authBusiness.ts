@@ -14,6 +14,10 @@ export class AuthBusiness {
 		if (!agente) {
 			throw new Error("Agente não encontrado ou credenciais inválidas.");
 		}
+			
+		if (!agente.senha) {
+			throw new Error("O agente não possui senha cadastrada.");
+		}
 
 		const senhaCorreta = await bcrypt.compare(senha, agente.senha);
 		if (!senhaCorreta) {
