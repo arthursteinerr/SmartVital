@@ -1,7 +1,6 @@
 import { getAgenteByRegistro } from "../data/agenteData";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { Agente } from "../types/agenteTypes";
 
 export class AuthBusiness {
   async login(registro_profissional: string, senha: string) {
@@ -44,5 +43,6 @@ export class AuthBusiness {
 		};
    		} catch (error: any) {
      	 throw new Error(error.message);
+		}
 	}
 }
