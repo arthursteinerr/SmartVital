@@ -5,7 +5,8 @@ import { Agente } from "../types/agenteTypes";
 
 export class AuthBusiness {
   async login(registro_profissional: string, senha: string) {
-		if (!registro_profissional || !senha) {
+		try {
+			if (!registro_profissional || !senha) {
 			throw new Error("Campos 'registro profissional' e 'senha' são obrigatórios.");
 		}
 
@@ -33,10 +34,15 @@ export class AuthBusiness {
 		);
 
 		return {
-			success: true,
-			message: "Login realizado com sucesso!",
 			token,
-			agente: agenteSemSenha
+			agente: {
+				id: agente.id,
+		        nome: agente.nome,
+				registro_profissional: agente.registro_profissional,
+				cargo: agente.cargo
+			}
 		};
+   		} catch (error: any) {
+     	 throw new Error(error.message);
 	}
 }
