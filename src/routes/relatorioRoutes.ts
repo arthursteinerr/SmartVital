@@ -8,11 +8,10 @@ const relatorioController = new RelatorioController();
 
 // Middleware temporário para simular autenticação
 relatorioRouter.use((req, res, next) => {
-  // Simula um médico autenticado
   req.user = {
     id: 1,
     nome: "Dra. Camila Nunes",
-    cargo: "Médico",
+    cargo: "Tec. Enfermagem", // Esta com erro pois estou forçando um cargo diferente, para testa com sucesso é so trocar para Médico ou Enfermeiro
     registro_profissional: "CRM-SP-456789",
     data_admissao: "2022-10-05"
   };
