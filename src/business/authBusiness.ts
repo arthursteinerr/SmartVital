@@ -1,10 +1,12 @@
 import { getAgenteByRegistro } from "../data/agenteData";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { LoginInput, AuthResponse } from "../dto/authDTO";
 
 export class AuthBusiness {
-  async login(registro_profissional: string, senha: string) {
+  public async login(input: LoginInput): Promise<AuthResponse> {
 		try {
+			const {registro_profissional, senha} = input;
 			if (!registro_profissional || !senha) {
 			throw new Error("Campos 'registro profissional' e 'senha' são obrigatórios.");
 		}
