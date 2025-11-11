@@ -2,6 +2,7 @@ import { getAgenteByRegistro } from "../data/agenteData";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { LoginInput, AuthResponse } from "../dto/authDTO";
+import { authUtils } from "../utils/authUtils";
 
 export class AuthBusiness {
   public async login(input: LoginInput): Promise<AuthResponse> {
@@ -26,17 +27,11 @@ export class AuthBusiness {
 			throw new Error("Credenciais inválidas.");
 		}
 
-		const token = jwt.sign(
-		{
+		const token = authUtils.generateToken({
 			id: agente.id,
 			cargo: agente.cargo,
-			registro: agente.registro_profissional
-		},
-		process.env.JWT_SECRET as string,
-		{
-			expiresIn: "5h"
-		}
-		);
+			registro_profissional: agente.registro_profissional
+		});
 
 		return {
 			token,
