@@ -85,7 +85,7 @@ export const patchPaciente = async (
     .returning(["id", "nome", "idade", "peso", "altura", "temperatura", "indice_glicemico", "pressao_arterial", "saturacao", "pulso", "respiracao"]);
     return pacienteAtualizado || null;
   } catch (error) {
-      console.error("Erro ao atualizar parcialmente paciente com o ID: ${id}", error);
+      console.error(`Erro ao atualizar parcialmente paciente com o ID: ${id}`, error);
       throw new Error("Erro ao atualizar parcialmente paciente.");
   }
 };
@@ -100,3 +100,4 @@ export const deletePaciente = async (id: number): Promise<boolean> => {
     throw new Error("Erro ao deletar paciente.");
   }
 };
+
