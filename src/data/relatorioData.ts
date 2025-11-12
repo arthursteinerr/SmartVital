@@ -1,101 +1,101 @@
-import { Relatorio } from "../types/relatorioTypes";
 import { connection } from "../dbConnection";
+import { Relatorio } from "../types/relatorioTypes";
 
-export class RelatorioData {
+export const createRelatorio = async (data: Relatorio): Promise<Relatorio> => {
 
-    async createRelatorio(data: Relatorio): Promise<Relatorio> {
+    const [id] = await connection<Relatorio>("relatorios")
+        .insert({
+            id_paciente: data.id_paciente,
+            id_agente: data.id_agente,
+            observacao: data.observacao,
+            completo: data.completo ?? false,
+            data_registro: connection.fn.now(),
+        })
 
-        const [id] = await connection<Relatorio>("relatorios")
-            .insert({
-                id_paciente: data.id_paciente,
-                id_agente: data.id_agente,
-                observacao: data.observacao,
-                completo: data.completo ?? false,
-                data_registro: connection.fn.now(),
-            })
+    // Como o MySQL não suporta .returning(), fazemos uma nova consulta
+    const novo = await connection<Relatorio>("relatorios").where({ id }).first();
 
-        // Como o MySQL não suporta .returning(), fazemos uma nova consulta
-        const novo = await connection<Relatorio>("relatorios").where({ id }).first();
-
-        if (!novo) {
-            throw new Error("Erro ao criar o relatório — não foi possível recuperar o registro criado.");
-        }
-
-        return novo;
+    if (!novo) {
+        throw new Error("Erro ao criar o relatório — não foi possível recuperar o registro criado.");
     }
 
-    async getRelatorioById(id: number): Promise<Relatorio | undefined> {
+    return novo;
+}
 
-        return connection<Relatorio>("relatorios")
-            .where({ id })
-            .andWhere({ deletado: false })
-            .first();
-    }
+export const getRelatorioById = async (id: number): Promise<Relatorio | undefined> => {
 
-    async getRelatoriosByPaciente(id_paciente: number): Promise<Relatorio[]> {
+    return connection<Relatorio>("relatorios")
+        .where({ id })
+        .andWhere({ deletado: false })
+        .first();
+}
 
-        return connection<Relatorio>("relatorios")
-            .where({ id_paciente })
-            .andWhere({ deletado: false })
-            .orderBy("data_registro", "desc");
-    }
+export const getRelatoriosByPaciente = async (id_paciente: number): Promise<Relatorio[]> => {
 
-    async updateRelatorio(id: number, data: Partial<Relatorio>): Promise<Relatorio | undefined> {
+    return connection<Relatorio>("relatorios")
+        .where({ id_paciente })
+        .andWhere({ deletado: false })
+        .orderBy("data_registro", "desc");
+}
 
-        const updateObj: Partial<Relatorio> = {};
+export const updateRelatorio = async (
+    id: number,
+    data: Partial<Relatorio>
+): Promise<Relatorio | undefined> => {
 
-        if (data.observacao !== undefined) updateObj.observacao = data.observacao;
-        if (data.completo !== undefined) updateObj.completo = data.completo;
+    const updateObj: Partial<Relatorio> = {};
 
-        await connection<Relatorio>("relatorios")
-            .where({ id })
-            .andWhere({ deletado: false })
-            .update({
-                ...updateObj,
-                data_registro: connection.fn.now(),
-            })
+    if (data.observacao !== undefined) updateObj.observacao = data.observacao;
+    if (data.completo !== undefined) updateObj.completo = data.completo;
 
-        // Altercao devido ao MySql não suportar o .returning(), por isso, fazemos uma nova consulta
-        const updated = await connection<Relatorio>("relatorios").where({ id }).first();
+    await connection<Relatorio>("relatorios")
+        .where({ id })
+        .andWhere({ deletado: false })
+        .update({
+            ...updateObj,
+            data_registro: connection.fn.now(),
+        })
 
-        return updated;
-    }
+    // Altercao devido ao MySql não suportar o .returning(), por isso, fazemos uma nova consulta
+    const updated = await connection<Relatorio>("relatorios").where({ id }).first();
 
-    async getRelatoriosPendentes(): Promise<Relatorio[]> {
+    return updated;
+}
 
-        return connection<Relatorio>("relatorios")
-            .where({ completo: false })
-            .andWhere({ deletado: false })
-            .orderBy("data_registro", "desc");
-    }
+export const getRelatoriosPendentes = async (): Promise<Relatorio[]> => {
 
-    async getRelatoriosByData(data: string): Promise<Relatorio[]> {
+    return connection<Relatorio>("relatorios")
+        .where({ completo: false })
+        .andWhere({ deletado: false })
+        .orderBy("data_registro", "desc");
+}
 
-        return connection<Relatorio>("relatorios")
-            .whereRaw("DATE(data_registro) = ?", [data])
-            .andWhere({ deletado: false })
-            .orderBy("data_registro", "desc")
-    }
+export const getRelatoriosByData = async (data: string): Promise<Relatorio[]> => {
 
-    async deleteRelatorio(
-        id: number,
-        solicitado_por: number,
-        confirmado_por_medico: number,
-        motivo_exclusao: string
-    ): Promise<Relatorio | undefined> {
+    return connection<Relatorio>("relatorios")
+        .whereRaw("DATE(data_registro) = ?", [data])
+        .andWhere({ deletado: false })
+        .orderBy("data_registro", "desc")
+}
 
-        await connection<Relatorio>("relatorios")
-            .where({ id })
-            .andWhere({ deletado: false })
-            .update({
-                deletado: true,
-                solicitado_por,
-                confirmado_por_medico,
-                motivo_exclusao,
-                data_exclusao: connection.fn.now()
-            });
-        return connection<Relatorio>("relatorios")
-            .where({ id })
-            .first();
-    }
+export const deleteRelatorio = async (
+    id: number,
+    solicitado_por: number,
+    confirmado_por_medico: number,
+    motivo_exclusao: string
+): Promise<Relatorio | undefined> => {
+
+    await connection<Relatorio>("relatorios")
+        .where({ id })
+        .andWhere({ deletado: false })
+        .update({
+            deletado: true,
+            solicitado_por,
+            confirmado_por_medico,
+            motivo_exclusao,
+            data_exclusao: connection.fn.now()
+        });
+    return connection<Relatorio>("relatorios")
+        .where({ id })
+        .first();
 }
