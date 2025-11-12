@@ -1,34 +1,28 @@
-import { Router } from "express";
-import { RelatorioController } from "../controller/relatorioController";
+import express from "express";
+import {
+  criarController,
+  buscarPorIdController,
+  buscarPorPacienteController,
+  atualizarController,
+  listarPendentesController,
+  listarPorDataController,
+  deletarController
+} from "../controller/relatorioController";
 import { AutorizacaoMiddleware } from "../middlewares/AutorizacaoMiddleware";
 
-export const relatorioRouter = Router();
-
-const relatorioController = new RelatorioController();
-
-// Middleware temporário para simular autenticação
-relatorioRouter.use((req, res, next) => {
-  req.user = {
-    id: 1,
-    nome: "Dra. Camila Nunes",
-    cargo: "Tec. Enfermagem", // Esta com erro pois estou forçando um cargo diferente, para testa com sucesso é so trocar para Médico ou Enfermeiro
-    registro_profissional: "CRM-SP-456789",
-    data_admissao: "2022-10-05"
-  };
-  next();
-});
+export const relatorioRouter = express.Router();
 
 // Metodos para busca
-relatorioRouter.get("/pendentes", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.listarPendentes(req, res));
-relatorioRouter.get("/:id", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.buscarPorId(req, res));
-relatorioRouter.get("/paciente/:id", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.listarPorPaciente(req, res));
-relatorioRouter.get("/por-data/:data", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.listarPorData(req, res));
+relatorioRouter.get("/pendentes", AutorizacaoMiddleware.autorizacaoAgente, listarPendentesController);
+relatorioRouter.get("/:id", AutorizacaoMiddleware.autorizacaoAgente, buscarPorIdController);
+relatorioRouter.get("/paciente/:id", AutorizacaoMiddleware.autorizacaoAgente, buscarPorPacienteController);
+relatorioRouter.get("/por-data/:data", AutorizacaoMiddleware.autorizacaoAgente, listarPorDataController);
 
 // Metodo para criar
-relatorioRouter.post("/", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.criar(req, res));
+relatorioRouter.post("/", AutorizacaoMiddleware.autorizacaoAgente, criarController);
 
 // Metodo para atualizar
-relatorioRouter.patch("/:id", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.atualizar(req, res));
+relatorioRouter.patch("/:id", AutorizacaoMiddleware.autorizacaoAgente, atualizarController);
 
 // Metodo para deletar
-relatorioRouter.delete("/deletar/:id", AutorizacaoMiddleware.autorizacaoAgente, (req, res) => relatorioController.deletar(req, res));
+relatorioRouter.delete("/deletar/:id", AutorizacaoMiddleware.autorizacaoAgente, deletarController);
