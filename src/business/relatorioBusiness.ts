@@ -1,82 +1,162 @@
-import { RelatorioData } from "../data/relatorioData";
+import {
+    createRelatorio,
+    getRelatorioById,
+    getRelatoriosByPaciente,
+    updateRelatorio,
+    getRelatoriosPendentes,
+    getRelatoriosByData,
+    deleteRelatorio
+} from "../data/relatorioData";
 import { Relatorio } from "../types/relatorioTypes";
 
-const relatorioData = new RelatorioData();
-
-export class RelatorioBusiness {
-
-    async criarRelatorio(input: Relatorio): Promise<Relatorio> {
+// POST Relatorio
+export const criarRelatorioBusiness = async (input: Relatorio) => {
+    try {
 
         if (!input.id_paciente || !input.id_paciente) {
-            throw new Error("Campos obrigatorios: id_paciente e id_agente");
+            return {
+                success: false,
+                message: "Campos obrigatórios: id_paciente e id_agente."
+            };
         }
-        return await relatorioData.createRelatorio(input);
+
+        const novoRelatorio = await createRelatorio(input);
+
+        return { success: true, data: novoRelatorio };
+    } catch (error: any) {
+        return { success: false, message: error.message };
     }
+};
 
-    async buscarPorId(id: number): Promise<Relatorio> {
+// GET Relatorio por ID
+export const buscarPorIdBusiness = async (id: number) => {
+    try {
 
-        const relatorio = await relatorioData.getRelatorioById(id);
+        const relatorio = await getRelatorioById(id);
 
-        if (!relatorio) throw new Error("Relatorio não encontrado!");
+        if (!relatorio) {
+            return {
+                success: false,
+                message: "Relatorio não encontrado!"
+            };
+        }
 
-        return relatorio;
+        return { success: true, data: relatorio };
+    } catch (error: any) {
+        return { success: false, message: error.message };
     }
+};
 
-    async listarPorPaciente(id_paciente: number): Promise<Relatorio[]> {
+// GET Relatorio por paciente
+export const listarPorPacienteBusiness = async (id_paciente: number) => {
+    try {
 
-        return await relatorioData.getRelatoriosByPaciente(id_paciente);
+        const relatorios = await getRelatoriosByPaciente(id_paciente);
+
+        return { success: true, data: relatorios };
+    } catch (error: any) {
+        return { success: false, message: error.message };
     }
+};
 
-    async atualizar(id: number, data: Partial<Relatorio>): Promise<Relatorio> {
+// PATCH Relatorio
+export const atualizarBusiness = async (id: number, data: Partial<Relatorio>) => {
+    try {
 
-        const relatorio = await relatorioData.updateRelatorio(id, data);
+        const relatorioExiste = await getRelatorioById(id);
 
-        if (!relatorio) throw new Error("Relatorio não encontrado.");
-        return relatorio;
+        if (!relatorioExiste) {
+            return {
+                success: false,
+                message: "Relatorio não encontrado."
+            };
+        }
+
+        const atualizado = await updateRelatorio(id, data);
+
+        return { success: true, data: atualizado };
+    } catch (error: any) {
+        return { success: false, message: error.message };
     }
+};
 
-    async listarPendentes(): Promise<Relatorio[]> {
+// GET Relatorios Pendentes
+export const listarPendentesBusiness = async () => {
+    try {
 
-        return await relatorioData.getRelatoriosPendentes();
+        const relatorios = await getRelatoriosPendentes();
+
+        return { success: true, data: relatorios }
+    } catch (error: any) {
+        return { success: false, message: error.message };
     }
+};
 
-    async listarPorData(data: string): Promise<Relatorio[]> {
+// GET Relatorios por Data
+export const listarPorDataBusiness = async (data: string) => {
+    try {
 
         if (!data) {
-            throw new Error("Parâmetro 'data' é obrigatório no formato DD-MM-YYYY.");
+            return {
+                success: false,
+                message: "Parâmetro 'data' é obrigatório no formato DD-MM-YYYY."
+            };
         }
+
         const match = data.match(/^(\d{2})-(\d{2})-(\d{4})$/);
+
         if (!match) {
-            throw new Error("Formato de data inválido. Use DD-MM-YYYY.");
+            return {
+                success: false,
+                message: "Formato de data inválido. Use DD-MM-YYYY."
+            };
         }
 
         // Convertendo a data do padrao brasileiro DD-MM-YYYY para o usado no banco de dados YYYY-MM-DD
         const [dia, mes, ano] = data.split("-");
         const dataFormatada = `${ano}-${mes}-${dia}`;
 
-        const relatorios = await relatorioData.getRelatoriosByData(dataFormatada);
-        return relatorios;
+        const relatorios = await getRelatoriosByData(dataFormatada);
+        return { success: true, data: relatorios };
+    } catch (error: any) {
+        return { success: false, message: error.message };
     }
+};
 
-    async excluirRelatorio(
-        id: number,
-        solicitado_por: number,
-        confirmado_por_medico: number,
-        motivo_exclusao: string
-    ): Promise<void> {
-
+// DELETE Relatorio
+export const excluirRelatorioBusiness = async (
+    id: number,
+    solicitado_por: number,
+    confirmado_por_medico: number,
+    motivo_exclusao: string
+) => {
+    try {
         if (solicitado_por === undefined || confirmado_por_medico === undefined) {
-            throw new Error("Campos 'solicitado_por' e 'confirmado_por_medico' são obrigatorios.")
+            return {
+                success: false,
+                message: "Campos 'solicitado_por' e 'confirmado_por_medico' são obrigatorios."
+            };
         }
+
         if (!motivo_exclusao || motivo_exclusao.trim().length < 30) {
-            throw new Error("O campo motivo_exclusao é obrigatorio e deve conter no minimo 30 caracteres.")
+            return {
+                success: false,
+                message: "O campo motivo_exclusao é obrigatorio e deve conter no minimo 30 caracteres."
+            };
         }
 
-        const relatorioExistente = await relatorioData.getRelatorioById(id);
+        const relatorioExistente = await getRelatorioById(id);
         if (!relatorioExistente) {
-            throw new Error("Relatorio não encontrado.");
+            return {
+                success: false,
+                message: "Relatorio não encontrado."
+            };
         }
 
-        await relatorioData.deleteRelatorio(id, solicitado_por, confirmado_por_medico, motivo_exclusao);
+        await deleteRelatorio(id, solicitado_por, confirmado_por_medico, motivo_exclusao);
+
+        return { success: true, data: relatorioExistente };
+    } catch (error: any) {
+        return { success: false, message: error.message };
     }
-}
+};
