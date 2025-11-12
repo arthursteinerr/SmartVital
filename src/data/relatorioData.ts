@@ -1,6 +1,7 @@
 import { connection } from "../dbConnection";
 import { Relatorio } from "../types/relatorioTypes";
 
+// POST Relatorio
 export const createRelatorio = async (data: Relatorio): Promise<Relatorio> => {
 
     const [id] = await connection<Relatorio>("relatorios")
@@ -22,6 +23,7 @@ export const createRelatorio = async (data: Relatorio): Promise<Relatorio> => {
     return novo;
 }
 
+// GET Por ID
 export const getRelatorioById = async (id: number): Promise<Relatorio | undefined> => {
 
     return connection<Relatorio>("relatorios")
@@ -30,6 +32,7 @@ export const getRelatorioById = async (id: number): Promise<Relatorio | undefine
         .first();
 }
 
+// GET Por Paciente
 export const getRelatoriosByPaciente = async (id_paciente: number): Promise<Relatorio[]> => {
 
     return connection<Relatorio>("relatorios")
@@ -38,6 +41,7 @@ export const getRelatoriosByPaciente = async (id_paciente: number): Promise<Rela
         .orderBy("data_registro", "desc");
 }
 
+// PATCH Paciente
 export const updateRelatorio = async (
     id: number,
     data: Partial<Relatorio>
@@ -62,6 +66,7 @@ export const updateRelatorio = async (
     return updated;
 }
 
+// GET Por Pendentes
 export const getRelatoriosPendentes = async (): Promise<Relatorio[]> => {
 
     return connection<Relatorio>("relatorios")
@@ -70,6 +75,7 @@ export const getRelatoriosPendentes = async (): Promise<Relatorio[]> => {
         .orderBy("data_registro", "desc");
 }
 
+// GET por Data
 export const getRelatoriosByData = async (data: string): Promise<Relatorio[]> => {
 
     return connection<Relatorio>("relatorios")
@@ -78,6 +84,7 @@ export const getRelatoriosByData = async (data: string): Promise<Relatorio[]> =>
         .orderBy("data_registro", "desc")
 }
 
+// DELETE Relatorio
 export const deleteRelatorio = async (
     id: number,
     solicitado_por: number,
