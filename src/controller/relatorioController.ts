@@ -1,117 +1,159 @@
 import { Request, Response } from "express";
-import { RelatorioBusiness } from "../business/relatorioBusiness";
+import {
+    criarRelatorioBusiness,
+    buscarPorIdBusiness,
+    listarPorPacienteBusiness,
+    atualizarBusiness,
+    listarPendentesBusiness,
+    listarPorDataBusiness,
+    excluirRelatorioBusiness
+} from "../business/relatorioBusiness";
 import { AutorizacaoMiddleware } from "../middlewares/AutorizacaoMiddleware";
 
-const relatorioBusiness = new RelatorioBusiness();
+// POST Relatorio
+export const criarController = async (req: Request, res: Response) => {
 
-export class RelatorioController {
+    const resultado = await criarRelatorioBusiness(req.body);
 
-    async criar(req: Request, res: Response) {
-
-        try {
-
-            const relatorio = await relatorioBusiness.criarRelatorio(req.body);
-            res.status(201).json(relatorio);
-        } catch (error: any) {
-
-            res.status(400).json({ erro: error.message });
-        }
+    if (!resultado.success) {
+        return res.status(400).json({ message: resultado.message });
     }
 
-    async buscarPorId(req: Request, res: Response) {
+    return res.status(201).json(resultado.data);
+};
 
-        try {
+// GET por ID
+export const buscarPorIdController = async (req: Request, res: Response) => {
 
-            const relatorio = await relatorioBusiness.buscarPorId(Number(req.params.id));
-            res.status(200).json(relatorio);
-        } catch (error: any) {
+    const id = Number(req.params.id);
 
-            res.status(404).json({ erro: error.message });
-        }
+    if (isNaN(id)) {
+        return res.status(400).json({
+            message: "ID invalido."
+        })
     }
 
-    async listarPorPaciente(req: Request, res: Response) {
+    const resultado = await buscarPorIdBusiness(id);
 
-        try {
-
-            const relatorios = await relatorioBusiness.listarPorPaciente(Number(req.params.id));
-            res.status(200).json(relatorios);
-        } catch (error: any) {
-
-            res.status(400).json({ erro: error.message });
-        }
+    if (!resultado.success) {
+        return res.status(404).json({ message: resultado.message })
     }
 
-    async atualizar(req: Request, res: Response) {
+    return res.status(200).json(resultado.data);
+};
 
-        try {
+// GET por Paciente
+export const buscarPorPacienteController = async (req: Request, res: Response) => {
 
-            const realtorio = await relatorioBusiness.atualizar(Number(req.params.id), req.body);
-            res.status(200).json(realtorio);
-        } catch (error: any) {
+    const id_paciente = Number(req.params.id);
 
-            res.status(400).json({ erro: error.message })
-        }
+    if (isNaN(id_paciente)) {
+        return res.status(400).json({
+            message: "ID de paciente invalido."
+        });
     }
 
-    async listarPendentes(req: Request, res: Response) {
+    const resultado = await listarPorPacienteBusiness(id_paciente);
 
-        try {
-
-            const relatorios = await relatorioBusiness.listarPendentes();
-            res.status(200).json(relatorios);
-        } catch (error: any) {
-
-            res.status(500).json({ erro: error.message })
-        }
+    if (!resultado.success) {
+        return res.status(400).json({ message: resultado.message });
     }
 
-    async listarPorData(req: Request, res: Response) {
-
-        try {
-
-            const { data } = req.params;
-            if (!data || typeof data !== "string") {
-                return res.status(400).json({ erro: "Parametro 'data' é obrigatorio no formato DD/MM/YYYY." });
-            }
-
-            const relatorios = await relatorioBusiness.listarPorData(data);
-            res.status(200).json(relatorios);
-        } catch (error: any) {
-
-            res.status(400).json({ erro: error.message });
-        }
-    }
-
-    async deletar(req: Request, res: Response) {
-
-        try {
-
-            const id = Number(req.params.id);
-            const { solicitado_por, confirmado_por_medico, motivo_exclusao } = req.body;
-
-            if (!solicitado_por || !confirmado_por_medico || !motivo_exclusao) {
-
-                return res.status(400).json({
-                    erro: "Campos obrigatorios: solicitado_por, confirmado_por_medico e motivo_exclusao."
-                });
-            }
-
-            if (confirmado_por_medico) {
-                const fakeNext = () => { };
-                const resultado = AutorizacaoMiddleware.autorizacaoMedico(req, res, fakeNext);
-
-                if (resultado) {
-                    return resultado;
-                }
-            }
-
-            await relatorioBusiness.excluirRelatorio(id, solicitado_por, confirmado_por_medico, motivo_exclusao);
-
-            res.status(200).json({ mensagem: "SOFT delete registrado com sucesso." })
-        } catch (error: any) {
-
-            res.status(400).json({ erro: error.message });
-        }
-    }
+    return res.status(200).json(resultado.data);
 }
+
+// PATCH Relatorio
+export const atualizarController = async (req: Request, res: Response) => {
+
+    const id = Number(req.params.id);
+
+    if (isNaN(id)) {
+        return res.status(400).json({
+            message: "ID invalido."
+        });
+    }
+
+    const result = await atualizarBusiness(id, req.body);
+
+    if (!result.success) {
+        return res.status(404).json({ message: result.message });
+    }
+
+    return res.status(200).json(result.data);
+}
+
+// GET por Pendentes
+export const listarPendentesController = async (req: Request, res: Response) => {
+
+    const resultado = await listarPendentesBusiness();
+
+    if (!resultado.success) {
+        return res.status(500).json({ message: resultado.message })
+    }
+
+    return res.status(200).json(resultado.data)
+}
+
+// GET por Data
+export const listarPorDataController = async (req: Request, res: Response) => {
+
+    const { data } = req.params;
+
+    if (!data || typeof data !== "string") {
+        return res.status(400).json({
+            message: "Parametro 'data' é obrigatorio no formato DD-MM-YYYY."
+        })
+    }
+
+    const resultado = await listarPorDataBusiness(data);
+
+    if (!resultado.success) {
+        return res.status(400).json({
+            message: resultado.message
+        });
+    }
+
+    return res.status(200).json(resultado.data);
+};
+
+// DELETE Relatorio
+export const deletarController = async (req: Request, res: Response) => {
+
+    const id = Number(req.params.id);
+    const { solicitado_por, confirmado_por_medico, motivo_exclusao } = req.body;
+
+    if (isNaN(id)) {
+        return res.status(400).json({
+            message: "ID invalido."
+        });
+    }
+
+    if (!solicitado_por || !confirmado_por_medico || !motivo_exclusao) {
+        return res.status(400).json({
+            message: "Campos obrigatorios: solicitado_por, confirmado_por_medico e motivo_exclusao."
+        });
+    }
+
+    // Middleware de autorizacao
+    if (confirmado_por_medico) {
+
+        const fakeNext = () => { };
+        const resultado = AutorizacaoMiddleware.autorizacaoMedico(req, res, fakeNext);
+
+        if (resultado) {
+            return resultado;
+        }
+    }
+
+    const resultado = await excluirRelatorioBusiness(id, solicitado_por, confirmado_por_medico, motivo_exclusao);
+
+    if (!resultado.success) {
+        return res.status(400).json({
+            message: resultado.message
+        });
+    }
+
+    return res.status(200).json({
+        message: "Soft delete registrado com sucesso."
+    });
+};
