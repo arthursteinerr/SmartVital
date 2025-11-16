@@ -35,5 +35,4 @@ module.exports = {
 
   // Setup para variáveis de ambiente e bibliotecas antes dos testes
   setupFiles: ["<rootDir>/tests/setup/env.setup.ts"],
-  setupFilesAfterEnv: ["<rootDir>/tests/setup/jest.setup.ts"],
 };
