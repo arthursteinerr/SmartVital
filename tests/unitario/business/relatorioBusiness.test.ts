@@ -1,3 +1,5 @@
+// Comando para rodar teste desse arquivo: npm test -- tests/unitario/business/relatorioBusiness.test.ts
+
 import {
     criarRelatorioBusiness,
     buscarPorIdBusiness,

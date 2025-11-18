@@ -24,7 +24,7 @@ module.exports = {
   moduleFileExtensions: ["ts", "js"],
 
   // Geração de cobertura
-  collectCoverage: true, // Gera relatorios automaticamente por meio do Jest
+  collectCoverage: false, // Gera relatorios automaticamente por meio do Jest
   collectCoverageFrom: ["src/**/*.ts"],
   // Evita medir cobertura de arquivos compilados ou de bibliotecas
   coveragePathIgnorePatterns: [
