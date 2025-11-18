@@ -19,13 +19,6 @@ export class authUtils {
         });
     }
 
-//    static generateToken(payload: TokenPayload): string {
-//        const options: SignOptions = {
-//       expiresIn: JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'] < -------- ??????????????
-//      };
-//        return jwt.sign(payload, JWT_SECRET, options);
- //   }
-
     static verifyToken(token: string): TokenPayload {
         try {
             if(!JWT_SECRET){
