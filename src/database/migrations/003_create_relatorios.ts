@@ -6,6 +6,7 @@ export async function up(knex: Knex): Promise<void> {
 
         table
             .integer("id_paciente")
+            .unsigned()
             .notNullable()
             .references("id")
             .inTable("pacientes")
@@ -13,6 +14,7 @@ export async function up(knex: Knex): Promise<void> {
 
         table
             .integer("id_agente")
+            .unsigned()
             .nullable()
             .references("id")
             .inTable("agentes")
@@ -23,8 +25,10 @@ export async function up(knex: Knex): Promise<void> {
         table.boolean("completo").notNullable().defaultTo(false);
 
         table.boolean("deletado").defaultTo(false);
+
         table
             .integer("solicitado_por")
+            .unsigned()
             .nullable()
             .references("id")
             .inTable("agentes")
@@ -32,6 +36,7 @@ export async function up(knex: Knex): Promise<void> {
 
         table
             .integer("confirmado_por_medico")
+            .unsigned()
             .nullable()
             .references("id")
             .inTable("agentes")

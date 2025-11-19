@@ -1,12 +1,15 @@
-import knexConfig from "../../knexfile";
-import knex from "knex";
+const knexConfig = require("../../knexfile.js");
+const knex = require("knex");
 
-export default async () => {
-  const db = knex(knexConfig.test);
+async function resetDB() {
+  const config = knexConfig.test;
+  const db = knex(config);
 
   await db.migrate.rollback(undefined, true);
   await db.migrate.latest();
   await db.seed.run();
 
   await db.destroy();
-};
+}
+
+module.exports = resetDB;

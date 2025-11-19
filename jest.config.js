@@ -37,7 +37,4 @@ module.exports = {
   setupFiles: ["<rootDir>/tests/setup/env.setup.ts"],
 
   setupFilesAfterEnv: ["<rootDir>/tests/setup/jest.setup.ts"],
-
-  // Reset do banco
-  globalSetup: "<rootDir>/tests/setup/resetDB.ts",
 };
