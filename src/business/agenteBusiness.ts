@@ -8,6 +8,7 @@ import { Agente } from "../types/agenteTypes";
 import { PaginatedResponse } from "../dto/paginationDTO";
 import { AgenteFilterDTO } from "../dto/agenteFilterDTO";
 import { FilterUtils } from '../utils/filterUtils';
+import bcrypt from "bcryptjs";
 
 //GET All Agentes
 export const getAllAgentesBusiness = async (
@@ -32,7 +33,7 @@ export const getAgenteByIdBusiness = async (id: number) => {
   return { success: true, data: agente };
 };
 
-//POST Novo Agente
+//POST Novo Agente (com hash da senha)
 export const createAgenteBusiness = async (data: Omit<Agente, "id">) => {
   if (!data.nome || !data.senha || !data.cargo || !data.registro_profissional || !data.data_admissao) {
     return { success: false, message: "Todos os campos são obrigatórios." };
@@ -44,9 +45,12 @@ export const createAgenteBusiness = async (data: Omit<Agente, "id">) => {
     return { success: false, message: "Registro profissional já cadastrado." };
   }
 
+  // Criptografar senha
+  const hashedPassword = await bcrypt.hash(data.senha, 10);
+
   const newAgente = await createAgente(
     data.nome,
-    data.senha,
+    hashedPassword,
     data.cargo,
     data.registro_profissional,
     data.data_admissao.toISOString()
@@ -55,17 +59,24 @@ export const createAgenteBusiness = async (data: Omit<Agente, "id">) => {
   return { success: true, data: newAgente };
 };
 
-//PATCH Atualiza Agente
-export const updateAgenteBusiness = async (id: number, data: Partial<Omit<Agente, "id" | "registro_profissional" | "data_admissao">>) => {
-  const agenteExists = await getAgenteById(id);
+//PATCH Atualiza Agente (re-hash da senha se fornecida)
+export const updateAgenteBusiness = async (
+  id: number,
+  data: Partial<Omit<Agente, "id" | "registro_profissional" | "data_admissao">>
+) => {
 
+  const agenteExists = await getAgenteById(id);
   if (!agenteExists) {
     return { success: false, message: "Agente não encontrado." };
   }
 
   const nome = data.nome ?? agenteExists.nome!;
-  const senha = data.senha ?? agenteExists.senha!;
   const cargo = data.cargo ?? agenteExists.cargo!;
+
+  // Se senha for informada, gera hash, senão mantém a atual
+  const senha = data.senha 
+    ? await bcrypt.hash(data.senha, 10)
+    : agenteExists.senha!;
 
   const updated = await updateAgente(id, nome, senha, cargo);
 
