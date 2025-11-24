@@ -1,13 +1,10 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 
 import { agenteRouter } from "./routes/agenteRoutes";
 import { pacienteRouter } from "./routes/pacienteRoutes"; 
 import { relatorioRouter } from "./routes/relatorioRoutes";
 import { authRouter } from "./routes/authRoutes";
-
-dotenv.config();
 
 export const app = express();
 
@@ -28,8 +25,4 @@ app.get("/", (req: Request, res: Response) => {
   res.status(200).send({
     message: "SmartVital API Funcionando!",
   });
-});
-
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Servidor rodando na porta", process.env.PORT || 3000);
 });
