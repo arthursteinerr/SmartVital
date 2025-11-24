@@ -134,14 +134,15 @@ export const deletarController = async (req: Request, res: Response) => {
         });
     }
 
-    // Middleware de autorizacao
+    // Verificando cargo sem utilizar o middleware de autorizacao dentro do controller 
+    // O Jest estava com problemas com o const fakeNext = () => { };
+    const user = (req as any).user;
+
     if (confirmado_por_medico) {
-
-        const fakeNext = () => { };
-        const resultado = AutorizacaoMiddleware.autorizacaoMedico(req, res, fakeNext);
-
-        if (resultado) {
-            return resultado;
+        if (user.cargo !== "Médico") {
+            return res.status(403).json({
+                message: "A exclusão só pode ser confirmada por um médico."
+            });
         }
     }
 
