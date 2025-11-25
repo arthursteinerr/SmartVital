@@ -56,7 +56,7 @@ export const buscarPorPacienteController = async (req: Request, res: Response) =
     const resultado = await listarPorPacienteBusiness(id_paciente);
 
     if (!resultado.success) {
-        return res.status(400).json({ message: resultado.message });
+        return res.status(404).json({ message: resultado.message });
     }
 
     return res.status(200).json(resultado.data);
@@ -70,6 +70,12 @@ export const atualizarController = async (req: Request, res: Response) => {
     if (isNaN(id)) {
         return res.status(400).json({
             message: "ID invalido."
+        });
+    }
+
+    if (!req.body || Object.keys(req.body).length === 0) {
+        return res.status(400).json({
+            message: "Nenhum dado enviado para atualizar."
         });
     }
 
@@ -128,9 +134,9 @@ export const deletarController = async (req: Request, res: Response) => {
         });
     }
 
-    if (!solicitado_por || !confirmado_por_medico || !motivo_exclusao) {
+    if (typeof solicitado_por !== "number" || typeof confirmado_por_medico !== "number" || !motivo_exclusao) {
         return res.status(400).json({
-            message: "Campos obrigatorios: solicitado_por, confirmado_por_medico e motivo_exclusao."
+            message: "Campos solicitado_por, confirmado_por_medico e motivo_exclusao invalidos ou ausentes."
         });
     }
 

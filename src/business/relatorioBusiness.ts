@@ -53,6 +53,14 @@ export const listarPorPacienteBusiness = async (id_paciente: number) => {
 
         const relatorios = await getRelatoriosByPaciente(id_paciente);
 
+        if (!relatorios || relatorios.length === 0) {
+
+            return {
+                success: false,
+                message: "Relatorio não encontrado para o paciente informado."
+            }
+        }
+
         return { success: true, data: relatorios };
     } catch (error: any) {
         return { success: false, message: error.message };
