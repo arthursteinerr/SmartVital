@@ -140,6 +140,13 @@ export const deletarController = async (req: Request, res: Response) => {
         });
     }
 
+    const existencia = await buscarPorIdBusiness(id);
+    if (!existencia.success) {
+        return res.status(400).json({
+            message: "Relatório não encontrado."
+        });
+    }
+
     // Verificando cargo sem utilizar o middleware de autorizacao dentro do controller 
     // O Jest estava com problemas com o const fakeNext = () => { };
     const user = (req as any).user;
