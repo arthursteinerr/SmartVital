@@ -2,6 +2,7 @@
 
 import request from "supertest";
 import { app } from "../../../../src/app";
+import { connection } from "../../../../src/dbConnection";
 
 const knexConfig = require("../../../../knexfile");
 import knex from "knex";
@@ -10,6 +11,10 @@ const db = knex(knexConfig.test);
 
 let tokenAgente: string;
 let tokenMedico: string;
+
+afterAll(async () => {
+    await connection.destroy(); // encerra pool do Knex
+});
 
 describe("Integração - Relatórios /relatorios", () => {
     beforeAll(async () => {

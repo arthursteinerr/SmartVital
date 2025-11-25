@@ -2,10 +2,15 @@
 
 import request from "supertest";
 import { app } from "../../../../src/app";
+import { connection } from "../../../../src/dbConnection";
 
 const knexConfig = require("../../../../knexfile");
 import knex from "knex";
 
+
+afterAll(async () => {
+    await connection.destroy(); // encerra pool do Knex
+});
 
 const db = knex(knexConfig.test);
 
