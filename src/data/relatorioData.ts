@@ -47,10 +47,10 @@ export const updateRelatorio = async (
     data: Partial<Relatorio>
 ): Promise<Relatorio | undefined> => {
 
-    const updateObj: Partial<Relatorio> = {};
+    const updateObj: any = {};
 
     if (data.observacao !== undefined) updateObj.observacao = data.observacao;
-    if (data.completo !== undefined) updateObj.completo = data.completo;
+    if (data.completo !== undefined) updateObj.completo = data.completo ? 1 : 0;
 
     await connection<Relatorio>("relatorios")
         .where({ id })
@@ -63,7 +63,13 @@ export const updateRelatorio = async (
     // Altercao devido ao MySql não suportar o .returning(), por isso, fazemos uma nova consulta
     const updated = await connection<Relatorio>("relatorios").where({ id }).first();
 
-    return updated;
+    if (!updated) return undefined;
+
+    // AQUI fazemos a conversão reversa tinyint -> boolean
+    return {
+        ...updated,
+        completo: updated.completo === 1
+    }
 }
 
 // GET Por Pendentes

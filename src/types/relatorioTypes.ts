@@ -4,7 +4,7 @@ export interface Relatorio {
     id_paciente: number;
     id_agente: number;
     observacao?: string;
-    completo?: boolean;
+    completo?: number | boolean;
     data_registro?: Date;
     deletado?: boolean;
     solicitado_por?: number | null;
