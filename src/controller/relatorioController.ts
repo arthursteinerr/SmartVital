@@ -142,8 +142,8 @@ export const deletarController = async (req: Request, res: Response) => {
 
     const existencia = await buscarPorIdBusiness(id);
     if (!existencia.success) {
-        return res.status(400).json({
-            message: "Relatório não encontrado."
+        return res.status(existencia.status ?? 400).json({
+            message: existencia.message
         });
     }
 

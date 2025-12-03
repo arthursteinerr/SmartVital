@@ -34,9 +34,10 @@ export const buscarPorIdBusiness = async (id: number) => {
 
         const relatorio = await getRelatorioById(id);
 
-        if (!relatorio) {
+        if (!relatorio || relatorio.deletado === true) {
             return {
                 success: false,
+                status: 404,
                 message: "Relatorio não encontrado!"
             };
         }
@@ -155,6 +156,13 @@ export const excluirRelatorioBusiness = async (
 
         const relatorioExistente = await getRelatorioById(id);
         if (!relatorioExistente) {
+            return {
+                success: false,
+                message: "Relatorio não encontrado."
+            };
+        }
+
+        if (relatorioExistente.deletado === true) {
             return {
                 success: false,
                 message: "Relatorio não encontrado."

@@ -24,7 +24,7 @@ export async function up(knex: Knex): Promise<void> {
         table.timestamp("data_registro").defaultTo(knex.fn.now());
         table.boolean("completo").notNullable().defaultTo(false);
 
-        table.boolean("deletado").defaultTo(false);
+        table.boolean("deletado").notNullable().defaultTo(false);
 
         table
             .integer("solicitado_por")

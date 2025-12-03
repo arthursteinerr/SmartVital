@@ -6,7 +6,7 @@ export interface Relatorio {
     observacao?: string;
     completo?: number | boolean;
     data_registro?: Date;
-    deletado?: boolean;
+    deletado?: boolean | number;
     solicitado_por?: number | null;
     confirmado_por_medico?:number | null;
     motivo_exclusao?: string | null;

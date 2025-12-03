@@ -10,8 +10,9 @@ export const createRelatorio = async (data: Relatorio): Promise<Relatorio> => {
             id_agente: data.id_agente,
             observacao: data.observacao,
             completo: data.completo ?? false,
+            deletado: false,
             data_registro: connection.fn.now(),
-        })
+        });
 
     // Como o MySQL não suporta .returning(), fazemos uma nova consulta
     const novo = await connection<Relatorio>("relatorios").where({ id }).first();
@@ -26,11 +27,17 @@ export const createRelatorio = async (data: Relatorio): Promise<Relatorio> => {
 // GET Por ID
 export const getRelatorioById = async (id: number): Promise<Relatorio | undefined> => {
 
-    return connection<Relatorio>("relatorios")
+    const rel = await connection<Relatorio>("relatorios")
         .where({ id })
-        .andWhere({ deletado: false })
         .first();
-}
+
+    if (!rel) return undefined;
+
+    return {
+        ...rel,
+        deletado: rel.deletado === 1 || rel.deletado === true
+    };
+};
 
 // GET Por Paciente
 export const getRelatoriosByPaciente = async (id_paciente: number): Promise<Relatorio[]> => {
@@ -98,9 +105,15 @@ export const deleteRelatorio = async (
     motivo_exclusao: string
 ): Promise<Relatorio | undefined> => {
 
-    await connection<Relatorio>("relatorios")
+    const existing = await connection<Relatorio>("relatorios")
         .where({ id })
         .andWhere({ deletado: false })
+        .first();
+
+    if (!existing) return undefined;
+
+    await connection<Relatorio>("relatorios")
+        .where({ id })
         .update({
             deletado: true,
             solicitado_por,
@@ -108,6 +121,7 @@ export const deleteRelatorio = async (
             motivo_exclusao,
             data_exclusao: connection.fn.now()
         });
+
     return connection<Relatorio>("relatorios")
         .where({ id })
         .first();
